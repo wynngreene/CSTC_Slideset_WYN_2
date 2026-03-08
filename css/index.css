@@ -1,0 +1,694 @@
+/* Main 2-column grid layout for plot screen */
+.main-2col-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 100%;
+    width: 98vw;
+    height: 95vh;
+    gap: 20px; /* Add gap between plot and right column */
+    box-sizing: border-box;
+    padding-right: 20px; /* Add padding to the right for spacing */
+}
+
+.left-col {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.right-col {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    gap: 10px; /* Add gap between area status and progress sections */
+}
+
+.plot-container {
+    background-color: #1c253f; /* Match the container background */
+    border-radius: 8px;
+    padding: 20px; /* Add padding inside the plot container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    height: 100%; /* Ensure container takes full height */
+    display: flex;
+    flex-direction: column;
+}
+
+.plot-row {
+    flex: 1 1 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    width: 100%;
+    height: 50%;
+}
+
+#plot1, #plot2 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.area-status-section {
+    flex: 3 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 75%;
+    width: 100%;
+
+    background-color: #1c253f; /* Match the container background */
+    margin: 0; /* Remove margin */
+    border-radius: 8px;
+    padding: 10px; /* Add padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.progress-section {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 25%;
+    width: 100%;
+
+    background-color: #1c253f; /* Match the container background */
+    margin: 0; /* Remove margin */
+    border-radius: 8px;
+    padding: 10px; /* Add padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Production Area Status Grid */
+.area-status-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(7, 1fr);
+    gap: 1.25em;
+    width: 100%;
+    max-width: 90%;
+    margin: 0px;
+    justify-items: stretch;
+    align-items: stretch;
+}
+
+.area-card {
+    display: flex;
+    align-items: center;
+    background: #232b45;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    padding: 0.6em 0.6em;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: white !important;
+    min-height: 2.5em;
+    transition: box-shadow 0.2s;
+}
+
+.area-status-dot {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    margin-right: 0.8em;
+    background: #28a745; /* Default green */
+    border: 2px solid #222;
+    transition: background 0.3s;
+}
+
+.area-card.down .area-status-dot {
+    background: #ff3b3b;
+    animation: flash 1s infinite;
+}
+
+/* Absorption plot vertical stack */
+.absorption-plot-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%; /* Take full height of parent */
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 20px 0 30px 0; /* Add padding: top and bottom */
+}
+
+#absorption-title {
+    margin: 0 0 0.8em 0;
+    font-size: 2.5em; /* Increase title font size */
+    font-weight: bold;
+    color: white;
+}
+
+#absorption-legend {
+    margin: 0 0 0.8em 0;
+    font-size: 1.4em; /* Increase legend font size */
+}
+
+#absorption-chart {
+    max-width: 100%;
+    width: 100%;
+    display: block;
+    margin: 0;
+    flex: 1; /* Take up all remaining space */
+    min-height: 0; /* Allow flexbox to shrink if needed */
+}
+/* One Lean Idea Progress Bar Styling */
+.progress-container {
+    position: relative;
+    height: 50px; /* Slightly increased for better text visibility */
+    background: #eee;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    border: 2px solid #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.oli-quarter-bar {
+    height: 100%;
+    position: relative;
+    transition: width 0.5s ease-in-out;
+    border-right: 2px solid #333;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    flex: 0 0 auto; /* Don't grow, only set width */
+}
+
+.oli-quarter-bar:last-child {
+    border-right: none;
+}
+
+/* Quarter value styling */
+.quarter-value {
+    color: white;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.oli-quarter-bar[data-width]:not([data-width="0"]) .quarter-value {
+    opacity: 1;
+}
+
+/* Quarter colors with enhanced gradients */
+#oli-q1-bar {
+    background: linear-gradient(135deg, #4caf50, #66bb6a, #4caf50);
+}
+
+#oli-q2-bar {
+    background: linear-gradient(135deg, #2196f3, #42a5f5, #2196f3);
+}
+
+#oli-q3-bar {
+    background: linear-gradient(135deg, #ff9800, #ffb74d, #ff9800);
+}
+
+#oli-q4-bar {
+    background: linear-gradient(135deg, #9c27b0, #ba68c8, #9c27b0);
+}
+
+/* Goal marker styling */
+#oli-goal-marker {
+    position: absolute;
+    top: -2px;
+    bottom: -2px;
+    width: 4px;
+    background: linear-gradient(135deg, #d32f2f, #f44336);
+    border-radius: 2px;
+    z-index: 10;
+    box-shadow: 0 0 6px rgba(211, 47, 47, 0.8);
+    left: calc(100% - 2px);
+}
+
+/* Progress text styling */
+#progress-text {
+    margin-top: 12px;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+/* Quarter labels styling */
+.quarter-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 20px;
+    margin-top: 8px;
+    font-size: 1em;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.quarter-labels span {
+    flex: 1 1 25%;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Adjust the header styles */
+#header {
+    text-align: center;
+    margin-bottom: 20px; /* Adjust this value if needed */
+}
+
+#header img {
+    width: clamp(300px, 20vw, 500px); /* Dynamically scale width between 100px and 300px */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Ensure it doesn't exceed the container width */
+    margin-top: 3vh; /* Reduce space above the image */
+}
+
+#header hr {
+    border: 0;
+    height: 1px;
+    background-color: #ffffff; /* Change to your desired color */
+    margin: 0 30vw 0 30vw; /* Adjust this value if needed */
+}
+
+#text-screen #header h1 {
+    margin-top: 0; /* Remove extra space above the heading */
+    margin-bottom: 5vh; /* Add a small gap below the heading */
+    font-size: clamp(1.5rem, 4vw, 5rem); /* Responsive font size */
+    color: white;
+    text-align: center; /* Ensure the text is centered */
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5); /* Optional shadow for better visibility */
+}
+
+/* Offset h2 from the left */
+#text-screen h1 {
+    margin-left: 5vw;
+    margin-right: 5vw;
+    margin-top: 4vh;
+    text-align: left;
+    font-size: clamp(1rem, 4vh, 2.9rem); /* Responsive font size */
+}
+
+/* Indent ul under h2 */
+#text-screen ul {
+    margin-left: 5vw;
+    margin-right: 5vw;
+    margin-top: 1vh;
+    list-style-type: disc;
+    font-size: clamp(0.5rem, 3.3vh, 2.25rem); /* Responsive font size */
+}
+
+#text-screen ul li {
+    margin-bottom: 2vh;
+    text-align: left;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Optional shadow for better visibility */
+}
+
+/* Flashing animation */
+@keyframes flash {
+    0% {
+        opacity: 1; /* Fully visible */
+    }
+    50% {
+        opacity: 0; /* Fully transparent */
+    }
+    100% {
+        opacity: 1; /* Fully visible */
+    }
+}
+
+#notes-screen {
+    background-color: #1c253f; /* Background color */
+    color: white; /* Text color */
+    padding: 10px; /* Inner padding */
+    margin: 3.5vh; /* Space around the edges */
+    position: fixed; /* Make it cover the entire viewport */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-sizing: border-box; /* Include padding in the total size */
+    border-radius: 10px; /* Optional: Add rounded corners */
+    overflow: auto; /* Enable scrolling if content overflows */
+}
+
+#notes-screen h1 {
+    text-align: center; /* Center-align text */
+    font-size: clamp(1.5rem, 4vw, 5rem); /* Responsive font size */
+    margin-bottom: 5vh; /* Space below the heading */
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5); /* Optional shadow for better visibility */
+}
+
+/* Styling for the notes content */
+#notes-content {
+    font-size: clamp(2rem, 3.5vw, 3rem); /* Responsive font size */
+    line-height: 1.5; /* Adjust line spacing */
+    color: white; /* Text color */
+    margin: 20px auto; /* Add spacing around the content */
+    max-width: 90%; /* Limit the width of the text */
+    word-wrap: break-word; /* Ensure long words break to the next line */
+}
+
+.hidden {
+    display: none !important; /* Completely hide the element */
+    visibility: hidden; /* Ensure it's not visible */
+}
+
+.plot-container {
+    background-color: #1c253f; /* Match the container background */
+    margin: 0; /* Remove margin */
+    border-radius: 8px;
+    padding: 10px 20px 10px 20px; /* Add padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Left column: Three equally sized rows */
+#plot1 {
+    grid-area: plot1; /* Use grid area for the first plot */
+    display: flex;
+    margin: 0 0.5vw 0.5vw 0;
+}
+
+#plot2 {
+    grid-area: plot2; /* Use grid area for the second plot */
+    display: flex;
+    margin: 0.5vw 0.5vw 0.5vw 0;
+}
+
+#plot2-chart {
+    width: 100%; /* Ensure the chart fills the container */
+    height: 100%; /* Ensure the chart fills the container */
+}
+
+/* Right column: Middle row with two columns */
+#area-statuses-left {
+    grid-area: area-left; /* Assign to the left column of the middle row */
+    border-radius: 0 0 0 8px;
+    margin: 0 0 0.5vw 0.5vw;
+    box-shadow: 4px 0 0 0 rgba(0, 0, 0, 0.2);
+}
+
+#area-statuses-right {
+    grid-area: area-right; /* Assign to the right column of the middle row */
+    border-radius: 0 0 8px 0;
+    margin: 0 0 0.5vw 0;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2); 
+}
+
+/* Flashing animation */
+@keyframes flash {
+    0% {
+        opacity: 1; /* Fully visible */
+    }
+    50% {
+        opacity: 0; /* Fully transparent */
+    }
+    100% {
+        opacity: 1; /* Fully visible */
+    }
+}
+
+/* Progress bar container */
+.progress-container {
+    width: 90%;
+    height: 30px;
+    background-color: #1c253f; /* Match the card background, not white */
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 5px auto; /* Center the progress bar */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Progress bar */
+.progress-bar {
+    height: 100%;
+    width: 0%; /* Start at 0% */
+    background-color: #28a745; /* Green color */
+    border-radius: 15px;
+    transition: width 0.5s ease; /* Smooth transition */
+}
+
+/* Progress text */
+#progress-text {
+    margin-top: 2em;
+    font-size: 1.5rem;
+    text-align: center;
+    color: white;
+}
+
+/* X-ticks container */
+.progress-ticks {
+    display: flex;
+    justify-content: space-between; /* Evenly distribute ticks */
+    position: relative;
+    margin-top: 10px;
+    width: 90%; /* Match the progress bar width */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Individual tick */
+.progress-tick {
+    width: 2px;
+    height: 10px;
+    background-color: white; /* Tick color */
+    position: relative;
+}
+
+/* Tick labels */
+.progress-tick-label {
+    font-size: 0.8rem;
+    color: white;
+    position: absolute;
+    top: 12px; /* Position below the tick */
+    transform: translateX(-50%); /* Center the label */
+}
+
+#absorption-legend li {
+    display: inline-block;
+    padding: 0 16px; /* left and right padding */
+    color: white;
+    font-size: 18px;
+}
+
+.oli-bar-segment {
+    margin-right: 6px;
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+}
+.oli-bar-segment:last-of-type {
+    margin-right: 0;
+}
+
+/* --- Dynamic viewport-based overrides --- */
+:root,
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    font-size: 1vw;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.layout,
+#layout-container,
+.screen {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.main-2col-grid {
+    width: 100%;
+    height: 100%;
+    gap: 0.8vw;
+    padding-right: 0.8vw;
+    box-sizing: border-box;
+}
+
+.right-col {
+    gap: 0.5vw;
+}
+
+.plot-container {
+    border-radius: 0.4vw;
+    padding: 0.8vw;
+    box-shadow: 0 0.2vw 0.4vw rgba(0, 0, 0, 0.2);
+}
+
+.area-status-section,
+.progress-section {
+    border-radius: 0.4vw;
+    padding: 0.5vw;
+    box-shadow: 0 0.2vw 0.4vw rgba(0, 0, 0, 0.2);
+}
+
+.area-status-grid {
+    gap: 0.6vw;
+    max-width: 100%;
+}
+
+.area-card {
+    border-radius: 0.5vw;
+    padding: 0.4vw 0.5vw;
+    font-size: 1.1vw;
+    min-height: 2.6vw;
+    box-shadow: 0 0.15vw 0.4vw rgba(0, 0, 0, 0.2);
+}
+
+.area-status-dot {
+    width: 0.9vw;
+    height: 0.9vw;
+    margin-right: 0.6vw;
+    border-width: 0.12vw;
+}
+
+.absorption-plot-vertical {
+    padding: 0.8vw 0 1.2vw 0;
+}
+
+#absorption-title {
+    margin: 0 0 0.6vw 0;
+    font-size: 2.2vw;
+}
+
+#absorption-legend {
+    margin: 0 0 0.6vw 0;
+    font-size: 1.2vw;
+}
+
+.progress-container {
+    height: 3vw;
+    border-radius: 0.6vw;
+    border-width: 0.12vw;
+    margin: 0.3vw auto;
+    box-shadow: 0 0.2vw 0.4vw rgba(0, 0, 0, 0.2);
+}
+
+.oli-quarter-bar {
+    border-right-width: 0.12vw;
+}
+
+.quarter-value {
+    font-size: 1vw;
+}
+
+#oli-goal-marker {
+    top: -0.12vw;
+    bottom: -0.12vw;
+    width: 0.25vw;
+    border-radius: 0.12vw;
+    box-shadow: 0 0 0.35vw rgba(211, 47, 47, 0.8);
+    left: calc(100% - 0.12vw);
+}
+
+#progress-text {
+    margin-top: 0.6vw;
+    font-size: 1.3vw;
+}
+
+.quarter-labels {
+    height: 1.2vw;
+    margin-top: 0.4vw;
+    font-size: 0.9vw;
+}
+
+.progress-ticks {
+    margin-top: 0.5vw;
+}
+
+.progress-tick {
+    width: 0.12vw;
+    height: 0.6vw;
+}
+
+.progress-tick-label {
+    top: 0.7vw;
+    font-size: 0.8vw;
+}
+
+#header {
+    margin-bottom: 1vw;
+}
+
+#header img {
+    width: 20vw;
+    margin-top: 2vh;
+}
+
+#header hr {
+    height: 0.12vw;
+    margin: 0 20vw;
+}
+
+#text-screen #header h1 {
+    margin-bottom: 3vh;
+    font-size: 3.5vw;
+}
+
+#text-screen h1 {
+    margin-top: 3vh;
+    font-size: 2.4vw;
+}
+
+#text-screen ul {
+    margin-top: 1.2vh;
+    font-size: 2vw;
+}
+
+#text-screen ul li {
+    margin-bottom: 1.6vh;
+}
+
+#notes-screen {
+    padding: 1vw;
+    margin: 0;
+    border-radius: 0.6vw;
+}
+
+#notes-screen h1 {
+    margin-bottom: 3vh;
+    font-size: 3.5vw;
+}
+
+#notes-content {
+    font-size: 2.4vw;
+    margin: 1vw auto;
+}
+
+#absorption-legend li {
+    padding: 0 0.8vw;
+    font-size: 1vw;
+}
+
+.oli-bar-segment {
+    margin-right: 0.3vw;
+}

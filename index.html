@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Layout</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/index.js?v=10" defer></script>
+    <link rel="stylesheet" href="css/styles.css?v=10">
+    <link rel="stylesheet" href="css/index.css?v=10">
+</head>
+<body>
+    <div id="layout-container" class="layout">
+        <!-- Static Text Screen -->
+        <div id="text-screen" class="screen">
+            <div id="header">
+                <img src="res/Keysight-Logo.png" alt="Keysight Logo">
+                <h1>Quality Policy</h1>
+                <hr>
+            </div>
+            <h1>Keysight Technologies Inc. will earn customer loyalty by providing products, solutions, 
+                services and interactions of the highest quality and greatest value.  To achieve this 
+                result, we will:</h1>
+            <ul>
+                <li>Ensure that all of our products and solutions comply with applicable safety and regulatory 
+                    requirements.</li>
+                <li>Ensure our products and solutions meet or exceed their published specifications.</li>
+                <li>Maintain and continually improve the effectiveness of our business management systems to 
+                    conform at a minimum to ISO9001 Quality Management Standard or more stringent or legally 
+                    required standards as dictated by specific markets.</li>
+                <li>Continually monitor and improve customers’ total experience.</li>
+                <li>Establish quality requirements for suppliers, partners, and contractors and hold them 
+                    accountable to comply.</li>
+                <li>Treat customers in accordance with Keysight’s Standards of Business Conduct and Privacy 
+                    policies.</li>
+
+            </ul>
+        </div>
+
+        <!-- Plot Screen -->
+        <div id="plot-screen" class="screen hidden">
+            <div class="main-2col-grid">
+                <!-- Left column: Single plot -->
+                <div class="left-col">
+                    <div class="plot-container" style="height: 100%; display: flex; flex-direction: column;">
+                        <div class="absorption-plot-vertical" style="height: 100%; display: flex; flex-direction: column;">
+                            <h2 id="absorption-title"> </h2>
+                            <div id="absorption-legend"></div>
+                            <canvas id="absorption-chart" style="flex: 1;"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right column: area status and progress bar -->
+                <div class="right-col">
+                    <div class="area-status-section">
+                        <h1>Production Area Status</h1>
+                        <div class="area-status-grid">
+                            <div class="area-card" id="thinfilm"><span class="area-status-dot"></span>Thin Film</div>
+                            <div class="area-card" id="thickfilm"><span class="area-status-dot"></span>Thick Film</div>
+                            <div class="area-card" id="laser"><span class="area-status-dot"></span>Laser</div>
+                            <div class="area-card" id="furnace"><span class="area-status-dot"></span>Furnace</div>
+                            <div class="area-card" id="die-attach"><span class="area-status-dot"></span>Die Attach</div>
+                            <div class="area-card" id="wire-bond"><span class="area-status-dot"></span>Wire Bond</div>
+                            <div class="area-card" id="test"><span class="area-status-dot"></span>Test</div>
+                            <div class="area-card" id="probes-smt"><span class="area-status-dot"></span>Probes / SMT</div>
+                            <div class="area-card" id="kitting-packaging"><span class="area-status-dot"></span>Kitting / Packaging</div>
+                            <div class="area-card" id="grind"><span class="area-status-dot"></span>Grind</div>
+                            <div class="area-card" id="tvac"><span class="area-status-dot"></span>TVAC</div>
+                            <div class="area-card" id="failure-analysis"><span class="area-status-dot"></span>Failure Analysis</div>
+                            <div class="area-card" id="stockroom"><span class="area-status-dot"></span>Stockroom</div>
+                            <div class="area-card" id="tpfc"><span class="area-status-dot"></span>TPFC</div>
+                        </div>
+                    </div>
+                    <div class="progress-section">
+                        <h1>One Lean Idea Progress</h1>
+                        <div class="progress-container">
+                            <div id="oli-q1-bar" class="oli-quarter-bar" data-quarter="Q1">
+                                <span class="quarter-value" id="q1-value">0</span>
+                            </div>
+                            <div id="oli-q2-bar" class="oli-quarter-bar" data-quarter="Q2">
+                                <span class="quarter-value" id="q2-value">0</span>
+                            </div>
+                            <div id="oli-q3-bar" class="oli-quarter-bar" data-quarter="Q3">
+                                <span class="quarter-value" id="q3-value">0</span>
+                            </div>
+                            <div id="oli-q4-bar" class="oli-quarter-bar" data-quarter="Q4">
+                                <span class="quarter-value" id="q4-value">0</span>
+                            </div>
+                            <div id="oli-goal-marker"></div>
+                        </div>
+                        <div class="quarter-labels">
+                            <span>Q1</span>
+                            <span>Q2</span>
+                            <span>Q3</span>
+                            <span>Q4</span>
+                        </div>
+                        <p id="progress-text">0 / 100 Ideas (0%)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes Screen -->
+        <div id="notes-screen" class="screen hidden">
+            <h1>ANNOUNCEMENTS</h1>
+            <div id="notes-content">No announcements available.</div>
+        </div>
+    </div>
+</body>
+</html>
+

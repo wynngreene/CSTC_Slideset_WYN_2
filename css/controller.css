@@ -1,0 +1,437 @@
+/* Global box-sizing */
+* {
+  box-sizing: border-box;
+}
+
+:root,
+html,
+body {
+    font-size: 1vw;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+#user-table td, #user-table th {
+  height: auto;
+  overflow: auto;
+  padding: 0.15vw;
+  word-wrap: break-word;
+  word-break: break-word;
+  font-size: 0.8vw;
+}
+#user-table {
+  background-color: #263354 !important;
+  border: 1px solid #ccc;
+  color: white;
+  table-layout: auto;
+  overflow: auto;
+}
+
+#user-table th, #user-table td {
+  color: white !important;
+}
+
+/* Apply the same styling to plot data table */
+#plot-data-table {
+  background-color: #263354 !important;
+  border: 1px solid #ccc;
+  color: white;
+  table-layout: auto;
+  overflow: auto;
+}
+
+#plot-data-table th, #plot-data-table td {
+  color: white !important;
+  height: auto;
+  overflow: auto;
+  padding: 0.15vw;
+  word-wrap: break-word;
+  word-break: break-word;
+  font-size: 0.8vw;
+}
+
+.column[data-grid-row="1"][data-grid-column="3"] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Main controller layout with header */
+#controllerContent {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: 0.1vw;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+}
+
+/* Authentication header styles */
+.auth-header {
+  background-color: #1c253f;
+  border-radius: 0.2vw;
+  padding: 0.2vw 0.4vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.auth-header #authStatus {
+  color: white;
+  font-weight: bold;
+  font-size: 1vw;
+}
+
+.auth-header #logout-btn {
+  padding: 0.5vw 1vw;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 0.3vw;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9vw;
+  transition: background-color 0.3s ease;
+  margin: auto 0;
+  height: fit-content;
+}
+
+.auth-header #logout-btn:hover {
+  background-color: #b71c1c;
+}
+
+/* Ensure grid container and columns stay within the window and are responsive */
+#controller-container {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 0.15vw;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  align-items: stretch;
+  justify-items: stretch;
+    min-width: 0;
+    min-height: 0;
+}
+
+.column {
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Position columns using data attributes for clarity */
+.column[data-grid-row="1"][data-grid-column="1"] { grid-row: 1; grid-column: 1; }
+.column[data-grid-row="1"][data-grid-column="2"] { grid-row: 1; grid-column: 2; }
+.column[data-grid-row="1"][data-grid-column="3"] { grid-row: 1; grid-column: 3; }
+.column[data-grid-row="2"][data-grid-column="1"] { grid-row: 2; grid-column: 1; }
+.column[data-grid-row="2"][data-grid-column="2"] { grid-row: 2; grid-column: 2; }
+.column[data-grid-row="2"][data-grid-column="3"] { grid-row: 2; grid-column: 3; }
+
+/* Style for each column */
+
+.column {
+  background-color: #1c253f;
+  color: white;
+  padding: 0.15vw 0.2vw;
+  border-radius: 0.2vw;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.column h2 {
+    margin-top: 0;
+    margin-bottom: 0.1vw;
+    font-size: 1.5vw;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Two-column grid for production areas */
+.status-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.2vw;
+    width: 100%;
+    margin-bottom: 0.1vw;
+    overflow-y: auto;
+    flex: 1;
+    max-height: 100%;
+}
+
+/* Style for each status item */
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 0.2vw;
+    font-size: 1vw;
+    font-weight: bold;
+    overflow: visible;
+}
+
+.status-item label {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+/* Toggle container */
+.toggle-container {
+    position: relative;
+    width: 3.5vw;
+    height: 1.8vw;
+    background: #dc3545;
+    border-radius: 0.9vw;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 0.3vw;
+    flex-shrink: 0;
+}
+
+/* Toggle switch (center button) */
+.toggle-switch {
+    position: absolute;
+    width: 1.5vw;
+    height: 1.5vw;
+    background: #fff;
+    border: 0.12vw solid #dc3545;
+    border-radius: 50%;
+    top: 50%;
+    left: 0.15vw;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    pointer-events: none;
+}
+
+/* Toggle container for "Down" state (keep for backward compatibility) */
+.toggle-container.down {
+    background: #dc3545; /* Red background for "Down" */
+}
+
+.toggle-container.down .toggle-switch {
+    background: #fff;
+    border-color: #dc3545;
+    left: 0.15vw;
+    transform: translateY(-50%);
+}
+
+/* Toggle container for "Up" state (ON/active) */
+.toggle-container.up,
+.toggle-container.active {
+    background: #28a745; /* Green background for "Up/Active" */
+}
+
+.toggle-container.up .toggle-switch,
+.toggle-container.active .toggle-switch {
+    transform: translate(1.8vw, -50%);
+    background: #fff;
+    border-color: #28a745;
+}
+
+/* Style for input fields to be responsive */
+input[type="number"],
+input[type="text"] {
+    padding: 0.3vw;
+    font-size: 0.9vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+label {
+    font-size: 0.9vw;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Style for buttons */
+button {
+    background-color: #334579;
+    color: white;
+    border: none;
+    border-radius: 0.2vw;
+    padding: 0.3vw 0.6vw;
+    cursor: pointer;
+    margin-top: 0.1vw;
+    font-size: 0.9vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+}
+
+button:hover {
+    background-color: #ffffff;
+    color: #263354;
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 768px) {
+    #controllerContent {
+        padding: 10px;
+        padding-bottom: 30px; /* Extra padding at bottom for mobile */
+    }
+    
+    .auth-header {
+        padding: 8px 15px; /* Even smaller padding on mobile */
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+        min-height: auto;
+    }
+    
+    .auth-header #authStatus {
+        font-size: 0.9rem;
+    }
+    
+    .auth-header #logout-btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+    
+    #controller-container {
+        grid-template-columns: 1fr; /* Stack columns vertically */
+        grid-template-rows: repeat(6, auto); /* 6 rows for mobile */
+    }
+    
+    .column {
+        grid-column: 1 !important;
+    }
+    
+    /* Reorder columns for mobile */
+    .column[data-grid-row="1"][data-grid-column="1"] { grid-row: 1; }
+    .column[data-grid-row="1"][data-grid-column="2"] { grid-row: 2; }
+    .column[data-grid-row="1"][data-grid-column="3"] { grid-row: 3; }
+    .column[data-grid-row="2"][data-grid-column="1"] { grid-row: 4; }
+    .column[data-grid-row="2"][data-grid-column="2"] { grid-row: 5; }
+    .column[data-grid-row="2"][data-grid-column="3"] { grid-row: 6; }
+}
+
+#rich-text-toolbar {
+    margin-bottom: 0.1vw;
+    flex-shrink: 0;
+}
+
+#rich-text-toolbar button {
+    margin-right: 0.2vw;
+    padding: 0.2vw 0.4vw;
+    font-size: 0.9vw;
+    cursor: pointer;
+}
+
+#rich-text-toolbar select {
+    margin-left: 0.2vw;
+    padding: 0.2vw;
+    font-size: 0.9vw;
+}
+
+#notes-input {
+    border: 1px solid #ccc;
+    padding: 0.2vw;
+    min-height: 4vh;
+    max-height: 15vh;
+    font-size: 0.9vw;
+    line-height: 1.5;
+    background-color: #263354;
+    overflow-y: auto;
+    overflow-x: auto;
+    width: 90%;
+    border-radius: 0.2vw;
+    resize: vertical;
+    margin-bottom: 0.1vw;
+    word-wrap: break-word;
+    flex-shrink: 1;
+}
+
+/* Additional responsive and scrolling rules */
+
+/* Ensure tables can grow to fill the cell and only tbody scrolls */
+table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+}
+
+#plot-data-table,
+#user-table {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 55%;
+    min-height: 0;
+    height: 55%;
+    max-height: 55%;
+}
+
+#plot-data-table thead,
+#user-table thead {
+    flex: 0 0 auto;
+}
+
+#plot-data-table tbody,
+#user-table tbody {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: auto;
+    max-height: 100%;
+}
+
+#plot-data-table thead,
+#plot-data-table tbody tr,
+#user-table thead,
+#user-table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* Make sure content before buttons can scroll */
+table,
+.status-grid,
+#notes-input {
+    flex-shrink: 1;
+    min-height: 0;
+}
+
+/* Make toolbar responsive */
+#rich-text-toolbar button,
+#rich-text-toolbar select,
+#rich-text-toolbar input {
+    font-size: 0.9vw;
+}
+
+/* Ensure input containers don't overflow */
+input[type="number"],
+input[type="text"],
+select {
+    min-width: 0;
+    max-width: 100%;
+}

@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Controller</title>
+    <link rel="icon" type="image/png" href="res/Keysight-Logo.png">
+    <script>
+        // EXTREME CACHE BUSTING - Generate unique timestamp for each resource
+        const timestamp = Date.now();
+        const version = 'EMERGENCY_' + timestamp;
+        
+        // Dynamically load CSS with timestamp
+        const cssFiles = [
+            'css/styles.css',
+            'css/controller.css'
+        ];
+        cssFiles.forEach(file => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = file + '?t=' + timestamp + '&nocache=' + Math.random();
+            document.head.appendChild(link);
+        });
+    </script>
+    <style>
+        /* Authentication Modal Overlay */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(28, 37, 63, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.3s ease;
+        }
+        
+        .auth-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .auth-container {
+            background-color: #263354;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            min-width: 350px;
+            max-width: 90vw;
+            color: white;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .auth-overlay:not(.hidden) .auth-container {
+            transform: scale(1);
+        }
+        
+        .auth-container .logo {
+            width: 200px;
+            margin-bottom: 20px;
+        }
+        
+        .auth-container h1 {
+            margin-bottom: 10px;
+            color: #ffffff;
+            font-size: 2em;
+        }
+        
+        .auth-container p {
+            margin-bottom: 30px;
+            color: #b8c5d6;
+            font-size: 1.1em;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #334579;
+            border-radius: 8px;
+            background-color: #1c253f;
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: #4caf50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #334579 0%, #4caf50 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+        }
+        
+        .error-message {
+            background-color: #e53e3e;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        /* Main controller should be hidden when not authenticated */
+        .controller-content {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .controller-content.authenticated {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+    <script>
+        // Global authentication variables
+        const CONTROLLER_PASSWORD_HASH = 'db7592c22f958f782f80e3c1122a85eaf26fe077627db67ef2d830ed3cc98e89';
+        const SESSION_DURATION = 4 * 60 * 60 * 1000; // 4 hours
+    </script>
+</head>
+<body>
+    <!-- Authentication Overlay Modal -->
+    <div id="authOverlay" class="auth-overlay">
+        <div class="auth-container">
+            <img src="res/Keysight-Logo.png" alt="Keysight Logo" class="logo">
+            <h1>🔐 Controller Access</h1>
+        <div class="loading-status">🔄 Initializing...</div>
+        
+        <!-- Dynamic Script Loading with Extreme Cache Busting -->
+        <script>
+            // Load JavaScript files with extreme cache busting
+            const scriptTimestamp = Date.now();
+            const scripts = [
+                'config.js',
+                'js/data-manager-serverwide.js', 
+                'js/controller.js'
+            ];
+            
+            let loadedCount = 0;
+            const totalScripts = scripts.length;
+            
+            scripts.forEach((src, index) => {
+                const script = document.createElement('script');
+                script.src = src + '?EMERGENCY_BUST=' + scriptTimestamp + '&rand=' + Math.random() + '&index=' + index;
+                script.onload = () => {
+                    loadedCount++;
+                    console.log('✅ Loaded:', src);
+                    if (loadedCount === totalScripts) {
+                        document.querySelector('.loading-status').textContent = '✅ Scripts Loaded';
+                    }
+                };
+                script.onerror = () => {
+                    console.error('❌ FAILED to load: ' + src);
+                };
+                document.head.appendChild(script);
+            });
+        </script>
+            <p>Enter password to access the slideset controller</p>
+            
+            <form id="authForm">
+                <input type="password" id="passwordInput" class="password-input" 
+                       placeholder="Enter password" required autocomplete="current-password">
+                <button type="submit" class="login-btn">🚀 Access Controller</button>
+            </form>
+            
+            <div id="errorMessage" class="error-message"></div>
+            
+            <div style="margin-top: 0.6vw; font-size: 0.7vw; color: #8a94a6;">
+                <p>🔒 Enterprise ASP.NET Security</p>
+                <p>Session timeout: 4 hours</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Controller Content (hidden until authenticated) -->
+    <div id="controllerContent" class="controller-content">
+        <!-- Authentication Header -->
+        <div class="auth-header">
+            <div id="authStatus">
+                <span id="authMessage">🔒 Not Authenticated</span>
+            </div>
+            <button id="logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <div id="controller-container">
+        <!-- Row 1, Col 1: Production Area Status Controller -->
+        <div class="column" data-grid-row="1" data-grid-column="1">
+            <h2>Production Area Status</h2>
+            <div class="status-grid">
+                <!-- ...status items as before... -->
+                <div class="status-item">
+                    <div class="toggle-container" data-area="thinfilm"><div class="toggle-switch"></div></div><label for="thinfilm-toggle">Thinfilm</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="thickfilm"><div class="toggle-switch"></div></div><label for="thickfilm-toggle">Thickfilm</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="laser"><div class="toggle-switch"></div></div><label for="laser-toggle">Laser</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="furnace"><div class="toggle-switch"></div></div><label for="furnace-toggle">Furnace</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="die-attach"><div class="toggle-switch"></div></div><label for="die-attach-toggle">Die Attach</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="wire-bond"><div class="toggle-switch"></div></div><label for="wire-bond-toggle">Wire Bond</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="test"><div class="toggle-switch"></div></div><label for="test-toggle">Test</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="probes-smt"><div class="toggle-switch"></div></div><label for="probes-smt-toggle">Probes & SMT</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="kitting-packaging"><div class="toggle-switch"></div></div><label for="kitting-packaging-toggle">Kitting & Pkg.</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="grind"><div class="toggle-switch"></div></div><label for="grind-toggle">Grind</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="tvac"><div class="toggle-switch"></div></div><label for="tvac-toggle">TVAC (Calpod)</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="failure-analysis"><div class="toggle-switch"></div></div><label for="failure-analysis-toggle">FA / II</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="stockroom"><div class="toggle-switch"></div></div><label for="stockroom-toggle">Stockroom</label>
+                </div>
+                <div class="status-item">
+                    <div class="toggle-container" data-area="tpfc"><div class="toggle-switch"></div></div><label for="tpfc-toggle">TPFC (Model Ship)</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 1, Col 2: Slide Control -->
+        <div class="column" data-grid-row="1" data-grid-column="2">
+            <h2>Slide Control</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 0.3vw; margin-bottom: 0.3vw;">
+                <div>
+                    <label for="text-duration">Quality Slide Duration:</label>
+                    <input type="number" id="text-duration" value="5" min="1" style="width: 100%;">
+                </div>
+                <div>
+                    <label for="plot-duration">Plot Slide Duration:</label>
+                    <input type="number" id="plot-duration" value="15" min="1" style="width: 100%;">
+                </div>
+                <div>
+                    <label for="notes-duration">Announcement Slide Duration:</label>
+                    <input type="number" id="notes-duration" value="10" min="1" style="width: 100%;">
+                </div>
+                <div>
+                    <label for="commit-duration">Commits Slide Duration:</label>
+                    <input type="number" id="commit-duration" value="10" min="1" style="width: 100%;">
+                </div>
+            </div>
+            <div style="display: flex; gap: 0.3vw; justify-content: center;">
+                <button id="update-settings">Update Settings</button>
+            </div>
+        </div>
+
+        <!-- Row 1, Col 3: Announcements -->
+        <div class="column" data-grid-row="1" data-grid-column="3">
+            <h2>Announcements</h2>
+            <!-- Toolbar for rich text editing -->
+            <div id="rich-text-toolbar">
+                <button type="button" onclick="document.execCommand('bold')"><b>B</b></button>
+                <button type="button" onclick="document.execCommand('italic')"><i>I</i></button>
+                <button type="button" onclick="document.execCommand('underline')"><u>U</u></button>
+                <select id="font-size-selector" style="margin-left: 1vw;">
+                    <option value="36pt">36pt</option>
+                    <option value="48pt">48pt</option>
+                    <option value="72pt">72pt</option>
+                    <option value="128pt">128pt</option>
+                </select>
+                <input type="color" id="font-color-selector" value="#E61515" style="width: 2.6vw; height: 1.9vw; vertical-align: middle;">
+                <button type="button" onclick="document.execCommand('insertUnorderedList')" style="margin-left: 1vw;">• List</button>
+                <button type="button" onclick="document.execCommand('insertOrderedList')">1. List</button>
+            </div>
+            <!-- Content-editable div for rich text input -->
+            <div id="notes-input" contenteditable="true">
+                Enter announcements here...
+            </div>
+            <br>
+            <button id="clear-notes" style="margin:0 0.3vw 0 0.1vw;">Clear Announcements</button>
+            <button id="update-notes">Update Announcements</button>
+        </div>
+
+        <!-- Row 2, Col 1: One Lean Idea (OLI) -->
+        <div class="column" data-grid-row="2" data-grid-column="1">
+            <h2>One Lean Idea (OLI)</h2>
+            <div style="margin-bottom: 0.3vw;">
+                <label for="oli-annual-goal" style="font-weight: bold;">Annual Goal:</label>
+                <input type="number" id="oli-annual-goal" style="width: 100%; margin-top: 0.1vw; margin-bottom: 0.2vw;">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.2vw;">
+                <div>
+                    <label for="oli-q1">Q1 Accomplishment:</label>
+                    <input type="number" id="oli-q1" style="width: 100%; margin-top: 0.1vw;">
+                </div>
+                <div>
+                    <label for="oli-q2">Q2 Accomplishment:</label>
+                    <input type="number" id="oli-q2" style="width: 100%; margin-top: 0.1vw;">
+                </div>
+                <div>
+                    <label for="oli-q3">Q3 Accomplishment:</label>
+                    <input type="number" id="oli-q3" style="width: 100%; margin-top: 0.1vw;">
+                </div>
+                <div>
+                    <label for="oli-q4">Q4 Accomplishment:</label>
+                    <input type="number" id="oli-q4" style="width: 100%; margin-top: 0.1vw;">
+                </div>
+            </div>
+            <div style="width: 100%; display: flex; justify-content: center; margin-top: 0.3vw;">
+                <button id="update-oli">Update OLI</button>
+            </div>
+        </div>
+        <!-- Row 2, Col 2: Plot Data Table -->
+        <div class="column" data-grid-row="2" data-grid-column="2" style="overflow-y: auto; height: 100%;">
+            <h2 style="margin-bottom: 0.2vw;">Absorption Data</h2>
+            <div style="display: flex; gap: 0.2vw; margin-bottom: 0.1vw;">
+                <button id="add-plot-row">Add Row</button>
+                <button id="delete-plot-row">Delete Row</button>
+            </div>
+            <table id="plot-data-table" border="1" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Cleanroom</th>
+                        <th>SMT</th>
+                        <th>CSTC</th>
+                    </tr>
+                </thead>
+                <tbody contenteditable="true">
+                    <tr>
+                        <td>1</td>
+                        <td>85</td>
+                        <td>90</td>
+                        <td>80</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>87</td>
+                        <td>92</td>
+                        <td>82</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>89</td>
+                        <td>94</td>
+                        <td>84</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>91</td>
+                        <td>96</td>
+                        <td>86</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>93</td>
+                        <td>98</td>
+                        <td>88</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>95</td>
+                        <td>100</td>
+                        <td>90</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>97</td>
+                        <td>102</td>
+                        <td>92</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>99</td>
+                        <td>104</td>
+                        <td>94</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>101</td>
+                        <td>106</td>
+                        <td>96</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="width: 100%; display: flex; justify-content: center; margin-top: 0.2vw;">
+                <button id="update-plot-data">Update Plot Data</button>
+            </div>
+        </div>
+        <!-- Row 2, Col 3: User-modifiable table -->
+        <div class="column" data-grid-row="2" data-grid-column="3" style="overflow-y: auto; height: 100%;">
+            <h2 style="margin-bottom: 0.2vw;">Commits</h2>
+            <div style="display: flex; gap: 0.2vw; margin-bottom: 0.1vw;">
+                <button id="add-row">Add Row</button>
+                <button id="delete-row">Delete Row</button>
+            </div>
+            <table id="user-table" border="1" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Part #</th>
+                        <th>Qty.</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody contenteditable="true">
+                    <tr>
+                        <td>PP0004A-F6</td>
+                        <td>10</td>
+                        <td>8/19</td>
+                        <td>Test</td>
+                    </tr>
+                    <tr>
+                        <td>DP0010A-F6</td>
+                        <td>7</td>
+                        <td>8/19</td>
+                        <td>Test</td>
+                    </tr>
+                    <tr>
+                        <td>N7024A-F6</td>
+                        <td>10</td>
+                        <td>8/23</td>
+                        <td>Final Package</td>
+                    </tr>
+                    <tr>
+                        <td>N5426-60020</td>
+                        <td>40</td>
+                        <td>8/23</td>
+                        <td>Kitting</td>
+                    </tr>
+                    <tr>
+                        <td>N5381-60030</td>
+                        <td>40</td>
+                        <td>8/23</td>
+                        <td>Kitting</td>
+                    </tr>
+                    <tr>
+                        <td>MX0106-60001</td>
+                        <td>10</td>
+                        <td>8/23</td>
+                        <td>Assembly</td>
+                    </tr>
+                    <tr>
+                        <td>E2678-60020</td>
+                        <td>20</td>
+                        <td>8/23</td>
+                        <td>Final Package</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="width: 100%; display: flex; justify-content: center; margin-top: 0.2vw;">
+                <button id="update-commits">Update Commits Table</button>
+            </div>
+        </div>
+        </div> <!-- End of controller-container -->
+    </div> <!-- End of controllerContent -->
+    
+    <script>
+        // Integrated Authentication & Controller Management
+        class IntegratedController {
+            constructor() {
+                this.authOverlay = document.getElementById('authOverlay');
+                this.controllerContent = document.getElementById('controllerContent');
+                this.authMessage = document.getElementById('authMessage');
+                this.isInitialized = false; // Flag to prevent duplicate initialization
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.checkAuthentication();
+                this.updateAuthStatus();
+                
+                // Focus password input when overlay is shown
+                this.authOverlay.querySelector('#passwordInput').focus();
+            }
+            
+            setupEventListeners() {
+                // Authentication form submission
+                document.getElementById('authForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+                
+                // Check authentication periodically
+                setInterval(() => {
+                    this.checkAuthentication();
+                    this.updateAuthStatus();
+                }, 30000); // Check every 30 seconds
+            }
+            
+            async handleLogin() {
+                const password = document.getElementById('passwordInput').value;
+                const errorDiv = document.getElementById('errorMessage');
+                
+                try {
+                    errorDiv.style.display = 'none';
+                    
+                    // Hash the password
+                    const passwordHash = await this.hashPassword(password);
+                    
+                    if (passwordHash === CONTROLLER_PASSWORD_HASH) {
+                        // Secure ASP.NET authentication only
+                        if (window.DataManager) {
+                            try {
+                                const secureResult = await window.DataManager.authenticate(password);
+                                if (secureResult.success) {
+                                    this.showController();
+                                    this.updateAuthStatus();
+                                    
+                                    // Clear password input
+                                    document.getElementById('passwordInput').value = '';
+                                } else {
+                                    throw new Error(secureResult.message || 'Authentication failed');
+                                }
+                            } catch (secureError) {
+                                console.error('🚫 Secure authentication failed:', secureError.message);
+                                throw new Error(secureError.message || 'Server authentication failed');
+                            }
+                        } else {
+                            throw new Error('DataManager not available - server required');
+                        }
+                        
+                    } else {
+                        throw new Error('Incorrect password');
+                    }
+                    
+                } catch (error) {
+                    console.error('Authentication failed:', error);
+                    this.showError(error.message || 'Authentication failed');
+                    document.getElementById('passwordInput').value = '';
+                    document.getElementById('passwordInput').focus();
+                }
+            }
+            
+            checkAuthentication() {
+                // Check secure authentication first
+                if (window.DataManager && window.DataManager.isAuthenticated()) {
+                    this.showController();
+                    return true;
+                }
+                
+                // Check legacy authentication
+                const authData = sessionStorage.getItem('authSession');
+                if (!authData) {
+                    this.showLogin();
+                    return false;
+                }
+                
+                try {
+                    const auth = JSON.parse(authData);
+                    const now = Date.now();
+                    
+                    if (!auth.authenticated || !auth.timestamp) {
+                        throw new Error('Invalid auth data');
+                    }
+                    
+                    if (now - auth.timestamp > SESSION_DURATION) {
+                        throw new Error('Session expired');
+                    }
+                    
+                    this.showController();
+                    return true;
+                    
+                } catch (error) {
+                    console.log('Authentication check failed:', error.message);
+                    sessionStorage.removeItem('authSession');
+                    this.showLogin();
+                    return false;
+                }
+            }
+            
+            showLogin() {
+                this.authOverlay.classList.remove('hidden');
+                this.controllerContent.classList.remove('authenticated');
+                setTimeout(() => {
+                    document.getElementById('passwordInput').focus();
+                }, 300);
+            }
+            
+            showController() {
+                this.authOverlay.classList.add('hidden');
+                this.controllerContent.classList.add('authenticated');
+                
+                // Initialize controller data after authentication with small delay (only once)
+                if (!this.isInitialized) {
+                    this.isInitialized = true;
+                    setTimeout(() => {
+                        if (window.initializeController) {
+                            window.initializeController().catch(error => {
+                                console.error('Failed to initialize controller after authentication:', error);
+                                this.isInitialized = false; // Reset flag on error to allow retry
+                            });
+                        }
+                    }, 100); // Small delay to ensure authentication state is fully established
+                }
+            }
+            
+            showError(message) {
+                const errorDiv = document.getElementById('errorMessage');
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                
+                // Hide error after 5 seconds
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 5000);
+            }
+            
+            updateAuthStatus() {
+                const messageSpan = this.authMessage;
+                
+                // Check secure authentication only
+                if (window.DataManager && window.DataManager.isAuthenticated()) {
+                    const authStatus = window.DataManager.getAuthStatus();
+                    // Clean authentication method string for display
+                    let displayMethod = authStatus.method;
+                    if (authStatus.method === 'aspnet_server_session') {
+                        displayMethod = 'ASP.NET Server-Wide Storage';
+                    } else if (authStatus.method === 'aspnet_application_state') {
+                        displayMethod = 'Server-Wide Persistent Storage';
+                    }
+                    messageSpan.textContent = `🔓 Authenticated (${displayMethod})`;
+                    messageSpan.style.color = '#4caf50';
+                    console.log('Authentication status:', authStatus);
+                } else {
+                    messageSpan.textContent = '🔒 Not Authenticated';
+                    messageSpan.style.color = '#f44336';
+                }
+            }
+            
+            async hashPassword(password) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(password);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+        }
+        
+        // Global logout function for the logout button
+        function logout() {
+            if (window.DataManager) {
+                window.DataManager.logout();
+            }
+            console.log('Logged out - all sessions cleared');
+            
+            // Reset initialization flag
+            if (window.controller) {
+                window.controller.isInitialized = false;
+            }
+            
+            // Reinitialize to show login
+            window.controller.checkAuthentication();
+            window.controller.updateAuthStatus();
+        }
+        
+        // Initialize the integrated controller
+        document.addEventListener('DOMContentLoaded', function() {
+            window.controller = new IntegratedController();
+            
+            // Helper function to generate password hash (for admin use)
+            // Open browser console and run: generateHash('your-new-password')
+            window.generateHash = async (pwd) => {
+                const hash = await window.controller.hashPassword(pwd);
+                console.log('Hash for "' + pwd + '":', hash);
+                return hash;
+            };
+        });
+    </script>
+</body>
+</html>
