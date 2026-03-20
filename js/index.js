@@ -13,24 +13,26 @@ document.addEventListener("DOMContentLoaded", async () => {
                         // Transform data structure to match expected format
                         const data = result.data;
                         const transformedData = {
-                            notes: data.notes || '',
-                            durations: {
-                                text: Math.round((data.settings?.textDuration || 5000) / 1000),
-                                plot: Math.round((data.settings?.plotDuration || 15000) / 1000), 
-                                notes: Math.round((data.settings?.notesDuration || 10000) / 1000)
-                            },
-                            statuses: data.statuses || {},
-                            oli: {
-                                annualGoal: data.oli?.annualGoal || 0,
-                                quarters: {
-                                    q1: data.oli?.q1 || 0,
-                                    q2: data.oli?.q2 || 0,
-                                    q3: data.oli?.q3 || 0,
-                                    q4: data.oli?.q4 || 0
-                                }
-                            },
-                            plotData: data.plotData || []
-                        };
+                        notes: data.notes || '',
+                        durations: {
+                            text: Math.round((data.settings?.textDuration || 5000) / 1000),
+                            plot: Math.round((data.settings?.plotDuration || 15000) / 1000),
+                            notes: Math.round((data.settings?.notesDuration || 10000) / 1000)
+                        },
+                        statuses: data.statuses || {},
+                        commits: data.commits || [],
+                        oli: {
+                            annualGoal: data.oli?.annualGoal || 0,
+                            quarters: {
+                                q1: data.oli?.q1 || 0,
+                                q2: data.oli?.q2 || 0,
+                                q3: data.oli?.q3 || 0,
+                                q4: data.oli?.q4 || 0
+                            }
+                        },
+                        plotData: data.plotData || []
+                    };
+                        
                         console.log('✅ Slideshow data loaded successfully:', transformedData);
                         return transformedData;
                     } else {
@@ -51,8 +53,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 notes: '',
                 durations: { text: 5, plot: 15, notes: 10 },
                 statuses: {},
+                commits: [],
                 oli: { annualGoal: 0, quarters: { q1: 0, q2: 0, q3: 0, q4: 0 } },
-                plotData: [] // Empty array instead of object
+                plotData: []
             };
         }
     };
@@ -120,6 +123,61 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
     
+    // Render commits table for commits-screen
+    async function updateCommitsDisplay() {
+        try {
+            const data = await SlideshowDataManager.loadData();
+            const commits = data.commits || [];
+            const commitsBody = document.getElementById('commits-display-body');
+
+            if (!commitsBody) return;
+
+            if (!commits.length) {
+                commitsBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="padding: 1.5rem; text-align: center;">
+                            No commits available.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            commitsBody.innerHTML = commits
+                .slice(0, 10)
+                .map(commit => `
+                    <tr>
+                        <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
+                            ${commit.partNumber || ''}
+                        </td>
+                        <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
+                            ${commit.quantity ?? ''}
+                        </td>
+                        <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
+                            ${commit.date || ''}
+                        </td>
+                        <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
+                            ${commit.location || ''}
+                        </td>
+                    </tr>
+                `)
+                .join('');
+        } catch (error) {
+            console.error('Error loading commits data:', error);
+
+            const commitsBody = document.getElementById('commits-display-body');
+            if (commitsBody) {
+                commitsBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="padding: 1.5rem; text-align: center;">
+                            Error loading commits.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+    }
+
     // Switch to the next screen
     async function switchScreen() {
         let nextScreenIndex;
@@ -136,14 +194,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 try {
                     const data = await SlideshowDataManager.loadData();
                     const notes = data.notes || '';
-                    
-                    // Skip notes screen if notes are empty or just default text
-                    if (!notes || notes.trim() === '' || notes.trim() === 'Enter announcements here...') {
-                        continue; // Try next screen
-                    } else {
-                        // Update notes content
-                        const notesContent = document.getElementById('notes-content');
-                        if (notesContent) {
+                    const notesContent = document.getElementById('notes-content');
+
+                    if (notesContent) {
+                        if (!notes || notes.trim() === '' || notes.trim() === 'Enter announcements here...') {
+                            notesContent.innerHTML = '<p style="opacity: 0.7;">No announcements available.</p>';
+                        } else {
                             notesContent.innerHTML = notes;
                         }
                     }
@@ -170,6 +226,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             await createAbsorptionChart();
             await updateOLIProgressBar(); // Update OLI data when showing plot
         }
+
+        if (screens[currentScreenIndex].id === "commits-screen") {
+            await updateCommitsDisplay();
+        }
     
         // Determine the duration for the current screen
         const currentScreenId = screens[currentScreenIndex].id;
@@ -189,9 +249,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 case "notes-screen":
                     nextDuration = (durations.notes || 10) * 1000;
                     break;
+                case "commits-screen":
+                    nextDuration = (durations.notes || 10) * 1000;
+                    break;
                 default:
-                    nextDuration = 5000; // Default 5 seconds
+                    nextDuration = 5000;
             }
+
         } catch (error) {
             console.error('Error loading duration data:', error);
             nextDuration = currentScreenId === "text-screen" ? 5000 : 15000; // Fallback
@@ -470,6 +534,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         await createAbsorptionChart();
         await updateOLIProgressBar();
+        await updateCommitsDisplay();
         startScreenSwitching();
     } catch (error) {
         console.error('Slideshow initialization failed:', error);

@@ -36,7 +36,7 @@
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            transition: opacity 0.3s ease;
+            transition: opacity 0s ease;
         }
         
         .auth-overlay.hidden {
@@ -54,7 +54,7 @@
             max-width: 90vw;
             color: white;
             transform: scale(0.9);
-            transition: transform 0.3s ease;
+            transition: transform 0s ease;
         }
         
         .auth-overlay:not(.hidden) .auth-container {
@@ -126,7 +126,7 @@
         .controller-content {
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0s ease;
         }
         
         .controller-content.authenticated {
@@ -620,7 +620,7 @@
                                 this.isInitialized = false; // Reset flag on error to allow retry
                             });
                         }
-                    }, 100); // Small delay to ensure authentication state is fully established
+                    }, 0); // Small delay to ensure authentication state is fully established
                 }
             }
             

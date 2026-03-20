@@ -1,4 +1,26 @@
-// Production Controller JavaScript
+// =====================================================
+// LOCAL DEVELOPMENT MODE
+// Automatically authenticate when running locally
+// so the controller UI can load without login.
+//
+// Only activates on:
+// localhost
+// 127.0.0.1
+// =====================================================
+
+const LOCAL_DEV_MODE =
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1";
+
+if (LOCAL_DEV_MODE) {
+    console.log("⚡ Local Dev Mode Enabled: Controller auto-authenticated");
+
+    // Mock DataManager auth functions if they exist
+    if (window.DataManager) {
+        window.DataManager.isAuthenticated = () => true;
+        window.DataManager.authenticate = async () => ({ success: true });
+    }
+}
 
 // Function to run controller initialization
 function runControllerInitialization() {
@@ -313,19 +335,17 @@ function setupController() {
         const textDuration = parseInt(document.getElementById("text-duration").value, 10);
         const plotDuration = parseInt(document.getElementById("plot-duration").value, 10);
         const notesDuration = parseInt(document.getElementById("notes-duration").value, 10);
-        const notes = (notesInput.textContent || '').trim();
 
         try {
-            // Combine all updates into a single call
+            // Only update slideshow timing here
             const updates = {
                 settings: {
                     textDuration: textDuration * 1000,
                     plotDuration: plotDuration * 1000,
                     notesDuration: notesDuration * 1000
-                },
-                notes: notes
+                }
             };
-            
+
             const result = await window.DataManager.updateData(updates);
             if (!result) {
                 throw new Error("Failed to update settings");
@@ -554,10 +574,15 @@ function setupController() {
     };
 
     // Auto-initialize if already authenticated - IMMEDIATE EXECUTION
-    if (window.DataManager && window.DataManager.isAuthenticated()) {
+    // if (window.DataManager && window.DataManager.isAuthenticated()) {
+    //     window.initializeController();
+
+    // Allow auto initialization in local dev mode
+    if (LOCAL_DEV_MODE || (window.DataManager && window.DataManager.isAuthenticated())) {
         window.initializeController();
     } else {
     }
+    
 
     // Add logout functionality
     const logoutBtn = document.getElementById('logout-btn');

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Layout</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/index.js?v=10" defer></script>
-    <link rel="stylesheet" href="css/styles.css?v=10">
-    <link rel="stylesheet" href="css/index.css?v=10">
+    <script src="js/index.js?v=11" defer></script>
+    <link rel="stylesheet" href="css/styles.css?v=11">
+    <link rel="stylesheet" href="css/index.css?v=11">
 </head>
 <body>
     <div id="layout-container" class="layout">
@@ -18,22 +18,35 @@
                 <h1>Quality Policy</h1>
                 <hr>
             </div>
-            <h1>Keysight Technologies Inc. will earn customer loyalty by providing products, solutions, 
-                services and interactions of the highest quality and greatest value.  To achieve this 
-                result, we will:</h1>
+            <h1>
+                Keysight Technologies Inc. will earn customer loyalty by providing products, solutions,
+                services and interactions of the highest quality and greatest value. To achieve this
+                result, we will:
+            </h1>
             <ul>
-                <li>Ensure that all of our products and solutions comply with applicable safety and regulatory 
-                    requirements.</li>
-                <li>Ensure our products and solutions meet or exceed their published specifications.</li>
-                <li>Maintain and continually improve the effectiveness of our business management systems to 
-                    conform at a minimum to ISO9001 Quality Management Standard or more stringent or legally 
-                    required standards as dictated by specific markets.</li>
-                <li>Continually monitor and improve customers’ total experience.</li>
-                <li>Establish quality requirements for suppliers, partners, and contractors and hold them 
-                    accountable to comply.</li>
-                <li>Treat customers in accordance with Keysight’s Standards of Business Conduct and Privacy 
-                    policies.</li>
-
+                <li>
+                    Ensure that all of our products and solutions comply with applicable safety and regulatory
+                    requirements.
+                </li>
+                <li>
+                    Ensure our products and solutions meet or exceed their published specifications.
+                </li>
+                <li>
+                    Maintain and continually improve the effectiveness of our business management systems to
+                    conform at a minimum to ISO9001 Quality Management Standard or more stringent or legally
+                    required standards as dictated by specific markets.
+                </li>
+                <li>
+                    Continually monitor and improve customers’ total experience.
+                </li>
+                <li>
+                    Establish quality requirements for suppliers, partners, and contractors and hold them
+                    accountable to comply.
+                </li>
+                <li>
+                    Treat customers in accordance with Keysight’s Standards of Business Conduct and Privacy
+                    policies.
+                </li>
             </ul>
         </div>
 
@@ -44,12 +57,13 @@
                 <div class="left-col">
                     <div class="plot-container" style="height: 100%; display: flex; flex-direction: column;">
                         <div class="absorption-plot-vertical" style="height: 100%; display: flex; flex-direction: column;">
-                            <h2 id="absorption-title"> </h2>
+                            <h2 id="absorption-title"></h2>
                             <div id="absorption-legend"></div>
                             <canvas id="absorption-chart" style="flex: 1;"></canvas>
                         </div>
                     </div>
                 </div>
+
                 <!-- Right column: area status and progress bar -->
                 <div class="right-col">
                     <div class="area-status-section">
@@ -71,6 +85,7 @@
                             <div class="area-card" id="tpfc"><span class="area-status-dot"></span>TPFC</div>
                         </div>
                     </div>
+
                     <div class="progress-section">
                         <h1>One Lean Idea Progress</h1>
                         <div class="progress-container">
@@ -102,10 +117,92 @@
 
         <!-- Notes Screen -->
         <div id="notes-screen" class="screen hidden">
-            <h1>ANNOUNCEMENTS</h1>
-            <div id="notes-content">No announcements available.</div>
+            <div
+                class="notes-screen-wrapper"
+                style="height: 100%; display: flex; flex-direction: column; padding: 2rem; box-sizing: border-box;"
+            >
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <img src="res/Keysight-Logo.png" alt="Keysight Logo" style="height: 56px;">
+                    <div>
+                        <h1 style="margin: 0;">ANNOUNCEMENTS</h1>
+                        <p style="margin: 0.3rem 0 0 0; opacity: 0.8;">Latest production and team updates</p>
+                    </div>
+                </div>
+
+                <div
+                    id="notes-content"
+                    style="
+                        flex: 1;
+                        overflow-y: auto;
+                        background: rgba(255,255,255,0.05);
+                        border: 1px solid rgba(255,255,255,0.15);
+                        border-radius: 12px;
+                        padding: 2rem;
+                        font-size: 1.5rem;
+                        line-height: 1.5;
+                        box-sizing: border-box;
+                    "
+                >
+                    No announcements available.
+                </div>
+            </div>
+        </div>
+
+        <!-- Commits Screen -->
+        <div id="commits-screen" class="screen hidden">
+            <div
+                class="commits-screen-content"
+                style="height: 100%; display: flex; flex-direction: column; padding: 2rem; box-sizing: border-box;"
+            >
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <img src="res/Keysight-Logo.png" alt="Keysight Logo" style="height: 56px;">
+                    <div>
+                        <h1 style="margin: 0;">RECENT COMMITS</h1>
+                        <p style="margin: 0.3rem 0 0 0; opacity: 0.8;">Latest production commit activity</p>
+                    </div>
+                </div>
+
+                <div
+                    style="
+                        flex: 1;
+                        overflow: hidden;
+                        background: rgba(255,255,255,0.05);
+                        border: 1px solid rgba(255,255,255,0.15);
+                        border-radius: 12px;
+                        box-sizing: border-box;
+                    "
+                >
+                    <table
+                        id="commits-display-table"
+                        style="width: 100%; border-collapse: collapse; font-size: 1.1rem;"
+                    >
+                        <thead>
+                            <tr>
+                                <th style="text-align: left; padding: 1rem; border-bottom: 2px solid rgba(255,255,255,0.25);">
+                                    Part #
+                                </th>
+                                <th style="text-align: left; padding: 1rem; border-bottom: 2px solid rgba(255,255,255,0.25);">
+                                    Qty.
+                                </th>
+                                <th style="text-align: left; padding: 1rem; border-bottom: 2px solid rgba(255,255,255,0.25);">
+                                    Date
+                                </th>
+                                <th style="text-align: left; padding: 1rem; border-bottom: 2px solid rgba(255,255,255,0.25);">
+                                    Location
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="commits-display-body">
+                            <tr>
+                                <td colspan="4" style="padding: 1.5rem; text-align: center;">
+                                    No commits available.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </body>
 </html>
-

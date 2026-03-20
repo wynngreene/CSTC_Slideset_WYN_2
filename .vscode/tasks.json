@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run IIS Express",
+      "type": "process",
+      "command": "C:\\Program Files\\IIS Express\\iisexpress.exe",
+      "args": [
+        "/path:C:\\Users\\wyngreen\\OneDrive - Keysight Technologies\\Documents\\2026_WEB_Projects\\CSTC_Slideset_WYN_2",
+        "/port:8080",
+        "/clr:v4.0"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
