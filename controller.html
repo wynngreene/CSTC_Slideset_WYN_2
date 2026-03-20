@@ -6,8 +6,14 @@
     <title>Production Controller</title>
     <link rel="icon" type="image/png" href="res/Keysight-Logo.png">
     <script>
-        // EXTREME CACHE BUSTING - Generate unique timestamp for each resource
+        // ====== WHAT THIS DOES ======
+        // Dynamically loads CSS files with a timestamp
+
+        // ====== WHY ======
+        // Prevents browser from using old cached CSS
+
         const timestamp = Date.now();
+        
         const version = 'EMERGENCY_' + timestamp;
         
         // Dynamically load CSS with timestamp
@@ -15,13 +21,19 @@
             'css/styles.css',
             'css/controller.css'
         ];
+
+        // Loop through each CSS file and attach it to the page
         cssFiles.forEach(file => {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
+
+            // Add unique query string to force refresh
             link.href = file + '?t=' + timestamp + '&nocache=' + Math.random();
+
             document.head.appendChild(link);
         });
     </script>
+
     <style>
         /* Authentication Modal Overlay */
         .auth-overlay {
@@ -134,18 +146,25 @@
             pointer-events: auto;
         }
     </style>
+
     <script>
         // Global authentication variables
         const CONTROLLER_PASSWORD_HASH = 'db7592c22f958f782f80e3c1122a85eaf26fe077627db67ef2d830ed3cc98e89';
         const SESSION_DURATION = 4 * 60 * 60 * 1000; // 4 hours
     </script>
 </head>
+
 <body>
+    <!-- Full-screen login overlay -->
     <!-- Authentication Overlay Modal -->
     <div id="authOverlay" class="auth-overlay">
+
         <div class="auth-container">
+            <!-- Logo -->
             <img src="res/Keysight-Logo.png" alt="Keysight Logo" class="logo">
+           
             <h1>🔐 Controller Access</h1>
+
         <div class="loading-status">🔄 Initializing...</div>
         
         <!-- Dynamic Script Loading with Extreme Cache Busting -->
@@ -178,13 +197,18 @@
             });
         </script>
             <p>Enter password to access the slideset controller</p>
-            
+            <!-- Login form -->
             <form id="authForm">
+
+                <!-- Password input -->
                 <input type="password" id="passwordInput" class="password-input" 
                        placeholder="Enter password" required autocomplete="current-password">
+
+                <!-- Submit button -->
                 <button type="submit" class="login-btn">🚀 Access Controller</button>
             </form>
             
+            <!-- Error message area -->
             <div id="errorMessage" class="error-message"></div>
             
             <div style="margin-top: 0.6vw; font-size: 0.7vw; color: #8a94a6;">
@@ -194,10 +218,13 @@
         </div>
     </div>
 
+    
     <!-- Main Controller Content (hidden until authenticated) -->
     <div id="controllerContent" class="controller-content">
+
         <!-- Authentication Header -->
         <div class="auth-header">
+
             <div id="authStatus">
                 <span id="authMessage">🔒 Not Authenticated</span>
             </div>

@@ -1,28 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Basic setup for the browser -->
     <meta charset="UTF-8">
+    <!-- Makes layout responsive (important for screens/TV scaling) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Dynamic Layout</title>
+
+    <!-- External library for charts (used in plot screen) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Your main JS file (controls screen switching, data loading, etc.)
+         defer = wait until HTML loads before running JS -->
     <script src="js/index.js?v=11" defer></script>
+
+    <!-- Global styles (shared across app) -->
     <link rel="stylesheet" href="css/styles.css?v=11">
+
+    <!-- Page-specific styles (for display page layout) -->
     <link rel="stylesheet" href="css/index.css?v=11">
 </head>
+
 <body>
+
+<!-- ===================================================== -->
+<!-- MAIN APP CONTAINER (ALL SCREENS LIVE INSIDE THIS) -->
+<!-- ===================================================== -->   
     <div id="layout-container" class="layout">
-        <!-- Static Text Screen -->
+
+
+        <!-- ===================================================== -->
+        <!-- SCREEN 1: TEXT / QUALITY POLICY (DEFAULT SCREEN) -->
+        <!-- ===================================================== -->
+        <!-- This screen is visible first because it DOES NOT have "hidden" -->
         <div id="text-screen" class="screen">
+
+            <!-- Header section -->
             <div id="header">
+                <!-- Company logo -->
                 <img src="res/Keysight-Logo.png" alt="Keysight Logo">
+
+                <!-- Title -->
                 <h1>Quality Policy</h1>
+
+                <!-- Divider line -->
                 <hr>
             </div>
+
+            <!-- Main policy content -->
             <h1>
                 Keysight Technologies Inc. will earn customer loyalty by providing products, solutions,
                 services and interactions of the highest quality and greatest value. To achieve this
                 result, we will:
             </h1>
+
+            <!-- Bullet list -->
             <ul>
                 <li>
                     Ensure that all of our products and solutions comply with applicable safety and regulatory
@@ -50,25 +83,41 @@
             </ul>
         </div>
 
-        <!-- Plot Screen -->
+        <!-- ===================================================== -->
+        <!-- SCREEN 2: CHART + PRODUCTION STATUS -->
+        <!-- ===================================================== -->
+        <!-- "hidden" means this screen is NOT shown at first -->
         <div id="plot-screen" class="screen hidden">
+
+            <!-- LEFT SIDE: CHART -->
             <div class="main-2col-grid">
+
                 <!-- Left column: Single plot -->
                 <div class="left-col">
                     <div class="plot-container" style="height: 100%; display: flex; flex-direction: column;">
                         <div class="absorption-plot-vertical" style="height: 100%; display: flex; flex-direction: column;">
+                            
+                            <!-- Title of chart -->
                             <h2 id="absorption-title"></h2>
+
+                            <!-- Legend (JS may update this) -->
                             <div id="absorption-legend"></div>
+
+                            <!-- Canvas where Chart.js draws the graph -->
                             <canvas id="absorption-chart" style="flex: 1;"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right column: area status and progress bar -->
+                <!-- RIGHT SIDE: STATUS + PROGRESS -->
                 <div class="right-col">
+
+                    <!-- Production Area Status -->
                     <div class="area-status-section">
                         <h1>Production Area Status</h1>
+
                         <div class="area-status-grid">
+                            <!-- Each "area-card" will likely be updated by JS -->
                             <div class="area-card" id="thinfilm"><span class="area-status-dot"></span>Thin Film</div>
                             <div class="area-card" id="thickfilm"><span class="area-status-dot"></span>Thick Film</div>
                             <div class="area-card" id="laser"><span class="area-status-dot"></span>Laser</div>
@@ -86,9 +135,14 @@
                         </div>
                     </div>
 
+                    <!-- OLI (Continuous Improvement) Section -->
                     <div class="progress-section">
                         <h1>One Lean Idea Progress</h1>
+
+                        <!-- Progress bar container -->
                         <div class="progress-container">
+
+                            <!-- Progress bar fill (JS will change width %) -->
                             <div id="oli-q1-bar" class="oli-quarter-bar" data-quarter="Q1">
                                 <span class="quarter-value" id="q1-value">0</span>
                             </div>
@@ -109,13 +163,17 @@
                             <span>Q3</span>
                             <span>Q4</span>
                         </div>
+
+                        <!-- Progress text (JS updates this) -->
                         <p id="progress-text">0 / 100 Ideas (0%)</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Notes Screen -->
+        <!-- ===================================================== -->
+        <!-- SCREEN 3: ANNOUNCEMENTS / NOTES -->
+        <!-- ===================================================== -->
         <div id="notes-screen" class="screen hidden">
             <div
                 class="notes-screen-wrapper"
@@ -125,10 +183,11 @@
                     <img src="res/Keysight-Logo.png" alt="Keysight Logo" style="height: 56px;">
                     <div>
                         <h1 style="margin: 0;">ANNOUNCEMENTS</h1>
+                        
+                        <!-- This content gets replaced by JS -->
                         <p style="margin: 0.3rem 0 0 0; opacity: 0.8;">Latest production and team updates</p>
                     </div>
                 </div>
-
                 <div
                     id="notes-content"
                     style="
@@ -143,12 +202,15 @@
                         box-sizing: border-box;
                     "
                 >
+                <!-- Default fallback text -->
                     No announcements available.
                 </div>
             </div>
         </div>
 
-        <!-- Commits Screen -->
+        <!-- ===================================================== -->
+        <!-- SCREEN 4: RECENT COMMITS -->
+        <!-- ===================================================== -->
         <div id="commits-screen" class="screen hidden">
             <div
                 class="commits-screen-content"
@@ -172,10 +234,12 @@
                         box-sizing: border-box;
                     "
                 >
+                <!-- Table of commits -->
                     <table
                         id="commits-display-table"
                         style="width: 100%; border-collapse: collapse; font-size: 1.1rem;"
                     >
+                    <!-- Table header -->
                         <thead>
                             <tr>
                                 <th style="text-align: left; padding: 1rem; border-bottom: 2px solid rgba(255,255,255,0.25);">
@@ -192,7 +256,11 @@
                                 </th>
                             </tr>
                         </thead>
+
+                        <!-- Table body (JS will replace this) -->
                         <tbody id="commits-display-body">
+
+                            <!-- Default fallback row -->
                             <tr>
                                 <td colspan="4" style="padding: 1.5rem; text-align: center;">
                                     No commits available.
