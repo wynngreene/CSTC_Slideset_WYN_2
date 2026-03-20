@@ -1,26 +1,46 @@
+// Wait until HTML is fully loaded before running JS
 document.addEventListener("DOMContentLoaded", async () => {
-    // Simple slideshow data manager (no authentication required)
+
+    // =====================================================
+    // 📦 DATA MANAGER (GET DATA FROM BACKEND)
+    // =====================================================
+    // This object is responsible for loading ALL data
+    // (notes, commits, durations, statuses, chart data)
+
     const SlideshowDataManager = {
         async loadData() {
             try {
-                // Try to load from secure backend with public access
+                // Fetch data from backend (public access)
                 const response = await fetch('secure-data-handler.aspx?action=load&public=true');
                 
+                // If request worked
                 if (response.ok) {
                     const result = await response.json();
                     
+                    // If backend returned success
                     if (result.status === 'success') {
+
                         // Transform data structure to match expected format
                         const data = result.data;
+
                         const transformedData = {
+                        // Notes / announcements
                         notes: data.notes || '',
+
+                        // Screen durations (converted from ms → seconds)
                         durations: {
                             text: Math.round((data.settings?.textDuration || 5000) / 1000),
                             plot: Math.round((data.settings?.plotDuration || 15000) / 1000),
                             notes: Math.round((data.settings?.notesDuration || 10000) / 1000)
                         },
+
+                        // Production statuses
                         statuses: data.statuses || {},
+
+                        // Commit list
                         commits: data.commits || [],
+
+                        // OLI data (progress tracking)
                         oli: {
                             annualGoal: data.oli?.annualGoal || 0,
                             quarters: {
@@ -30,6 +50,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 q4: data.oli?.q4 || 0
                             }
                         },
+
+                        // Chart data
                         plotData: data.plotData || []
                     };
                         
@@ -48,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 alert('Slideshow error: ' + error.message);
             }
             
-            // Return minimal data structure for slideshow functionality
+            // Fallback data (if backend fails)
             return {
                 notes: '',
                 durations: { text: 5, plot: 15, notes: 10 },
@@ -60,14 +82,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     };
 
+    // =====================================================
+    // 🖥 SCREEN SYSTEM (SLIDESHOW LOGIC)
+    // =====================================================
+
     const screens = document.querySelectorAll(".screen");
     let currentScreenIndex = 0; // Start with the first screen (text)
     let timeoutId; // Declare a timeout ID at a higher scope
+
+    // =====================================================
+    // 🔄 PRODUCTION STATUS (WITH CACHE)
+    // =====================================================
+
     let lastStatusUpdate = 0; // Cache timestamp for status updates
     const STATUS_CACHE_DURATION = 30000; // 30 seconds cache
 
     // Update production area status display (with caching)
     async function updateProductionAreaStatus() {
+
+        // Skip if recently updated (reduces API calls)
         const now = Date.now();
         if (now - lastStatusUpdate < STATUS_CACHE_DURATION) {
             return; // Skip if updated recently
@@ -77,16 +110,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             const data = await SlideshowDataManager.loadData();
             const statuses = data.statuses || {};
             
-            // Update each area card based on status
+            // Loop through each status and update UI
             Object.keys(statuses).forEach(area => {
                 const areaCard = document.getElementById(area);
+
                 if (areaCard) {
                     if (statuses[area]) {
-                        // Area is UP - remove down class
-                        areaCard.classList.remove('down');
+                        areaCard.classList.remove('down'); // area is UP
                     } else {
-                        // Area is DOWN - add down class for red flashing
-                        areaCard.classList.add('down');
+                        areaCard.classList.add('down'); // area is DOWN
                     }
                 }
             });
@@ -112,7 +144,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // Show the current screen
+    // =====================================================
+    // 🎬 SHOW CURRENT SCREEN
+    // =====================================================
+
     function showScreen(index) {
         screens.forEach((screen, i) => {
             if (i === index) {
@@ -123,15 +158,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
     
-    // Render commits table for commits-screen
+    // =====================================================
+    // 📋 COMMITS DISPLAY
+    // =====================================================
+
     async function updateCommitsDisplay() {
         try {
             const data = await SlideshowDataManager.loadData();
             const commits = data.commits || [];
-            const commitsBody = document.getElementById('commits-display-body');
 
+            const commitsBody = document.getElementById('commits-display-body');
             if (!commitsBody) return;
 
+            // If no commits → show default message
             if (!commits.length) {
                 commitsBody.innerHTML = `
                     <tr>
@@ -142,9 +181,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 `;
                 return;
             }
-
+            // Render commits into table rows
             commitsBody.innerHTML = commits
-                .slice(0, 10)
+                .slice(0, 10) // only show top 10
                 .map(commit => `
                     <tr>
                         <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
@@ -178,8 +217,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // Switch to the next screen
+    // =====================================================
+    // 🔄 SWITCH SCREENS (CORE LOGIC)
+    // =====================================================
+
     async function switchScreen() {
+
+        // Move to next screen
         let nextScreenIndex;
         let attempts = 0;
         
@@ -189,6 +233,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             nextScreenIndex = currentScreenIndex;
             attempts++;
             
+            // ===== NOTES SCREEN LOGIC =====
             // Check if this is the notes screen and if we should skip it
             if (screens[currentScreenIndex].id === "notes-screen") {
                 try {
@@ -197,6 +242,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const notesContent = document.getElementById('notes-content');
 
                     if (notesContent) {
+                        // If empty → show fallback
                         if (!notes || notes.trim() === '' || notes.trim() === 'Enter announcements here...') {
                             notesContent.innerHTML = '<p style="opacity: 0.7;">No announcements available.</p>';
                         } else {
@@ -216,6 +262,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Show the current screen
         showScreen(currentScreenIndex);
         
+        // ===== SPECIAL SCREEN ACTIONS =====
         // Update production area status only on text screen or every 3rd screen change to reduce API calls
         if (screens[currentScreenIndex].id === "text-screen" || currentScreenIndex % 3 === 0) {
             await updateProductionAreaStatus();
@@ -231,6 +278,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             await updateCommitsDisplay();
         }
     
+          // ===== SET SCREEN DURATION =====
         // Determine the duration for the current screen
         const currentScreenId = screens[currentScreenIndex].id;
         let nextDuration;
@@ -265,7 +313,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         timeoutId = setTimeout(switchScreen, nextDuration);
     }
 
-    // Start the screen switching logic
+    // =====================================================
+    // ▶ START SLIDESHOW
+    // =====================================================
+
     async function startScreenSwitching() {
         clearTimeout(timeoutId); // Clear any existing timeout
         showScreen(currentScreenIndex); // Show the first screen
@@ -291,7 +342,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Generate x-axis labels (days of the month up to current day)
     const days = Array.from({ length: currentDay }, (_, i) => i + 1);
 
-    // Global chart variable to manage chart lifecycle
+    // =====================================================
+    // 📊 CHART LOGIC (Chart.js)
+    // =====================================================
+
     let absorptionChart = null;
 
     // Fetch plot data from data manager
@@ -350,7 +404,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Set the HTML title
         document.getElementById('absorption-title').textContent = title;
 
-        // If chart exists, update its data instead of destroying and recreating
+        // If chart already exists → update instead of recreate
         if (absorptionChart) {
             absorptionChart.data.datasets[0].data = cleanroomData;
             absorptionChart.data.datasets[1].data = smtData;
@@ -455,7 +509,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         return legendHtml;
     }
 
-    // OLI stacked progress bar logic
+    // =====================================================
+    // 📈 OLI PROGRESS BAR
+    // =====================================================
+
     async function updateOLIProgressBar() {
         try {
             const config = await SlideshowDataManager.loadData();
@@ -530,7 +587,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // Initialize everything with error handling
+    // =====================================================
+    // 🚀 INIT APP
+    // =====================================================
+    
     try {
         await createAbsorptionChart();
         await updateOLIProgressBar();
