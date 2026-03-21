@@ -36,51 +36,52 @@
         <!-- This screen is visible first because it DOES NOT have "hidden" -->
         <div id="text-screen" class="screen">
 
-            <!-- Header section -->
-            <div id="header">
-                <!-- Company logo -->
-                <img src="res/Keysight-Logo.png" alt="Keysight Logo">
+            <div class="screen-page">
 
-                <!-- Title -->
-                <h1>Quality Policy</h1>
+                <header class="screen-header">
+                        <img src="res/Keysight-Logo.png" alt="Keysight Logo" class="screen-logo">
+                        <h1 class="screen-title">Quality Policy</h1>
+                        <hr> <!-- Divider line -->
+                </header>
 
-                <!-- Divider line -->
-                <hr>
+                <main class="screen-body">
+                    <div class="content-block">
+                        <!-- Main policy content -->
+                        <h1>
+                            Keysight Technologies Inc. will earn customer loyalty by providing products, solutions,
+                            services and interactions of the highest quality and greatest value. To achieve this
+                            result, we will:
+                        </h1>
+                        <!-- Bullet list -->
+                        <ul>
+                            <li>
+                                Ensure that all of our products and solutions comply with applicable safety and regulatory
+                                requirements.
+                            </li>
+                            <li>
+                                Ensure our products and solutions meet or exceed their published specifications.
+                            </li>
+                            <li>
+                                Maintain and continually improve the effectiveness of our business management systems to
+                                conform at a minimum to ISO9001 Quality Management Standard or more stringent or legally
+                                required standards as dictated by specific markets.
+                            </li>
+                            <li>
+                                Continually monitor and improve customers’ total experience.
+                            </li>
+                            <li>
+                                Establish quality requirements for suppliers, partners, and contractors and hold them
+                                accountable to comply.
+                            </li>
+                            <li>
+                                Treat customers in accordance with Keysight’s Standards of Business Conduct and Privacy
+                                policies.
+                            </li>
+                        </ul>
+                    </div>
+                </main>
+
             </div>
-
-            <!-- Main policy content -->
-            <h1>
-                Keysight Technologies Inc. will earn customer loyalty by providing products, solutions,
-                services and interactions of the highest quality and greatest value. To achieve this
-                result, we will:
-            </h1>
-
-            <!-- Bullet list -->
-            <ul>
-                <li>
-                    Ensure that all of our products and solutions comply with applicable safety and regulatory
-                    requirements.
-                </li>
-                <li>
-                    Ensure our products and solutions meet or exceed their published specifications.
-                </li>
-                <li>
-                    Maintain and continually improve the effectiveness of our business management systems to
-                    conform at a minimum to ISO9001 Quality Management Standard or more stringent or legally
-                    required standards as dictated by specific markets.
-                </li>
-                <li>
-                    Continually monitor and improve customers’ total experience.
-                </li>
-                <li>
-                    Establish quality requirements for suppliers, partners, and contractors and hold them
-                    accountable to comply.
-                </li>
-                <li>
-                    Treat customers in accordance with Keysight’s Standards of Business Conduct and Privacy
-                    policies.
-                </li>
-            </ul>
         </div>
 
         <!-- ===================================================== -->
@@ -89,85 +90,95 @@
         <!-- "hidden" means this screen is NOT shown at first -->
         <div id="plot-screen" class="screen hidden">
 
-            <!-- LEFT SIDE: CHART -->
-            <div class="main-2col-grid">
+            <div class="screen-page">
 
-                <!-- Left column: Single plot -->
-                <div class="left-col">
-                    <div class="plot-container" style="height: 100%; display: flex; flex-direction: column;">
-                        <div class="absorption-plot-vertical" style="height: 100%; display: flex; flex-direction: column;">
-                            
-                            <!-- Title of chart -->
-                            <h2 id="absorption-title"></h2>
+                <header class="screen-header">
+                    <img src="res/Keysight-Logo.png" alt="Keysight Logo" class="screen-logo">
+                    <h1 class="screen-title">Dashboard</h1>
+                </header>
 
-                            <!-- Legend (JS may update this) -->
-                            <div id="absorption-legend"></div>
+                <main class="screen-body">
+                    <!-- LEFT SIDE: CHART -->
+                    <div class="main-2col-grid">
 
-                            <!-- Canvas where Chart.js draws the graph -->
-                            <canvas id="absorption-chart" style="flex: 1;"></canvas>
+                        <!-- Left column: Single plot -->
+                        <div class="left-col">
+                            <div class="plot-container" style="height: 100%; display: flex; flex-direction: column;">
+                                <div class="absorption-plot-vertical" style="height: 100%; display: flex; flex-direction: column;">
+                                    
+                                    <!-- Title of chart -->
+                                    <h2 id="absorption-title"></h2>
+
+                                    <!-- Legend (JS may update this) -->
+                                    <div id="absorption-legend"></div>
+
+                                    <!-- Canvas where Chart.js draws the graph -->
+                                    <canvas id="absorption-chart" style="flex: 1;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT SIDE: STATUS + PROGRESS -->
+                        <div class="right-col">
+
+                            <!-- Production Area Status -->
+                            <div class="area-status-section">
+                                <h1>Production Area Status</h1>
+
+                                <div class="area-status-grid">
+                                    <!-- Each "area-card" will likely be updated by JS -->
+                                    <div class="area-card" id="thinfilm"><span class="area-status-dot"></span>Thin Film</div>
+                                    <div class="area-card" id="thickfilm"><span class="area-status-dot"></span>Thick Film</div>
+                                    <div class="area-card" id="laser"><span class="area-status-dot"></span>Laser</div>
+                                    <div class="area-card" id="furnace"><span class="area-status-dot"></span>Furnace</div>
+                                    <div class="area-card" id="die-attach"><span class="area-status-dot"></span>Die Attach</div>
+                                    <div class="area-card" id="wire-bond"><span class="area-status-dot"></span>Wire Bond</div>
+                                    <div class="area-card" id="test"><span class="area-status-dot"></span>Test</div>
+                                    <div class="area-card" id="probes-smt"><span class="area-status-dot"></span>Probes / SMT</div>
+                                    <div class="area-card" id="kitting-packaging"><span class="area-status-dot"></span>Kitting / Packaging</div>
+                                    <div class="area-card" id="grind"><span class="area-status-dot"></span>Grind</div>
+                                    <div class="area-card" id="tvac"><span class="area-status-dot"></span>TVAC</div>
+                                    <div class="area-card" id="failure-analysis"><span class="area-status-dot"></span>Failure Analysis</div>
+                                    <div class="area-card" id="stockroom"><span class="area-status-dot"></span>Stockroom</div>
+                                    <div class="area-card" id="tpfc"><span class="area-status-dot"></span>TPFC</div>
+                                </div>
+                            </div>
+
+                            <!-- OLI (Continuous Improvement) Section -->
+                            <div class="progress-section">
+                                <h1>One Lean Idea Progress</h1>
+
+                                <!-- Progress bar container -->
+                                <div class="progress-container">
+
+                                    <!-- Progress bar fill (JS will change width %) -->
+                                    <div id="oli-q1-bar" class="oli-quarter-bar" data-quarter="Q1">
+                                        <span class="quarter-value" id="q1-value">0</span>
+                                    </div>
+                                    <div id="oli-q2-bar" class="oli-quarter-bar" data-quarter="Q2">
+                                        <span class="quarter-value" id="q2-value">0</span>
+                                    </div>
+                                    <div id="oli-q3-bar" class="oli-quarter-bar" data-quarter="Q3">
+                                        <span class="quarter-value" id="q3-value">0</span>
+                                    </div>
+                                    <div id="oli-q4-bar" class="oli-quarter-bar" data-quarter="Q4">
+                                        <span class="quarter-value" id="q4-value">0</span>
+                                    </div>
+                                    <div id="oli-goal-marker"></div>
+                                </div>
+                                <div class="quarter-labels">
+                                    <span>Q1</span>
+                                    <span>Q2</span>
+                                    <span>Q3</span>
+                                    <span>Q4</span>
+                                </div>
+
+                                <!-- Progress text (JS updates this) -->
+                                <p id="progress-text">0 / 100 Ideas (0%)</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- RIGHT SIDE: STATUS + PROGRESS -->
-                <div class="right-col">
-
-                    <!-- Production Area Status -->
-                    <div class="area-status-section">
-                        <h1>Production Area Status</h1>
-
-                        <div class="area-status-grid">
-                            <!-- Each "area-card" will likely be updated by JS -->
-                            <div class="area-card" id="thinfilm"><span class="area-status-dot"></span>Thin Film</div>
-                            <div class="area-card" id="thickfilm"><span class="area-status-dot"></span>Thick Film</div>
-                            <div class="area-card" id="laser"><span class="area-status-dot"></span>Laser</div>
-                            <div class="area-card" id="furnace"><span class="area-status-dot"></span>Furnace</div>
-                            <div class="area-card" id="die-attach"><span class="area-status-dot"></span>Die Attach</div>
-                            <div class="area-card" id="wire-bond"><span class="area-status-dot"></span>Wire Bond</div>
-                            <div class="area-card" id="test"><span class="area-status-dot"></span>Test</div>
-                            <div class="area-card" id="probes-smt"><span class="area-status-dot"></span>Probes / SMT</div>
-                            <div class="area-card" id="kitting-packaging"><span class="area-status-dot"></span>Kitting / Packaging</div>
-                            <div class="area-card" id="grind"><span class="area-status-dot"></span>Grind</div>
-                            <div class="area-card" id="tvac"><span class="area-status-dot"></span>TVAC</div>
-                            <div class="area-card" id="failure-analysis"><span class="area-status-dot"></span>Failure Analysis</div>
-                            <div class="area-card" id="stockroom"><span class="area-status-dot"></span>Stockroom</div>
-                            <div class="area-card" id="tpfc"><span class="area-status-dot"></span>TPFC</div>
-                        </div>
-                    </div>
-
-                    <!-- OLI (Continuous Improvement) Section -->
-                    <div class="progress-section">
-                        <h1>One Lean Idea Progress</h1>
-
-                        <!-- Progress bar container -->
-                        <div class="progress-container">
-
-                            <!-- Progress bar fill (JS will change width %) -->
-                            <div id="oli-q1-bar" class="oli-quarter-bar" data-quarter="Q1">
-                                <span class="quarter-value" id="q1-value">0</span>
-                            </div>
-                            <div id="oli-q2-bar" class="oli-quarter-bar" data-quarter="Q2">
-                                <span class="quarter-value" id="q2-value">0</span>
-                            </div>
-                            <div id="oli-q3-bar" class="oli-quarter-bar" data-quarter="Q3">
-                                <span class="quarter-value" id="q3-value">0</span>
-                            </div>
-                            <div id="oli-q4-bar" class="oli-quarter-bar" data-quarter="Q4">
-                                <span class="quarter-value" id="q4-value">0</span>
-                            </div>
-                            <div id="oli-goal-marker"></div>
-                        </div>
-                        <div class="quarter-labels">
-                            <span>Q1</span>
-                            <span>Q2</span>
-                            <span>Q3</span>
-                            <span>Q4</span>
-                        </div>
-
-                        <!-- Progress text (JS updates this) -->
-                        <p id="progress-text">0 / 100 Ideas (0%)</p>
-                    </div>
-                </div>
+                </main>
             </div>
         </div>
 
@@ -175,36 +186,19 @@
         <!-- SCREEN 3: ANNOUNCEMENTS / NOTES -->
         <!-- ===================================================== -->
         <div id="notes-screen" class="screen hidden">
-            <div
-                class="notes-screen-wrapper"
-                style="height: 100%; display: flex; flex-direction: column; padding: 2rem; box-sizing: border-box;"
-            >
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                    <img src="res/Keysight-Logo.png" alt="Keysight Logo" style="height: 56px;">
-                    <div>
-                        <h1 style="margin: 0;">ANNOUNCEMENTS</h1>
-                        
-                        <!-- This content gets replaced by JS -->
-                        <p style="margin: 0.3rem 0 0 0; opacity: 0.8;">Latest production and team updates</p>
+
+            <div class="screen-page">
+                
+                <header class="screen-header">
+                    <img src="res/Keysight-Logo.png" alt="Keysight Logo" class="screen-logo">
+                    <h1 class="screen-title">Announcements</h1>
+                </header>
+
+                <main class="screen-body">
+                    <div id="notes-content">
+                        No announcements available.
                     </div>
-                </div>
-                <div
-                    id="notes-content"
-                    style="
-                        flex: 1;
-                        overflow-y: auto;
-                        background: rgba(255,255,255,0.05);
-                        border: 1px solid rgba(255,255,255,0.15);
-                        border-radius: 12px;
-                        padding: 2rem;
-                        font-size: 1.5rem;
-                        line-height: 1.5;
-                        box-sizing: border-box;
-                    "
-                >
-                <!-- Default fallback text -->
-                    No announcements available.
-                </div>
+                </main>
             </div>
         </div>
 
@@ -212,34 +206,17 @@
         <!-- SCREEN 4: RECENT COMMITS -->
         <!-- ===================================================== -->
         <div id="commits-screen" class="screen hidden">
-            <div
-                class="commits-screen-content"
-                style="height: 100%; display: flex; flex-direction: column; padding: 2rem; box-sizing: border-box;"
-            >
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                    <img src="res/Keysight-Logo.png" alt="Keysight Logo" style="height: 56px;">
-                    <div>
-                        <h1 style="margin: 0;">RECENT COMMITS</h1>
-                        <p style="margin: 0.3rem 0 0 0; opacity: 0.8;">Latest production commit activity</p>
-                    </div>
-                </div>
 
-                <div
-                    style="
-                        flex: 1;
-                        overflow: hidden;
-                        background: rgba(255,255,255,0.05);
-                        border: 1px solid rgba(255,255,255,0.15);
-                        border-radius: 12px;
-                        box-sizing: border-box;
-                    "
-                >
-                <!-- Table of commits -->
-                    <table
-                        id="commits-display-table"
-                        style="width: 100%; border-collapse: collapse; font-size: 1.1rem;"
-                    >
-                    <!-- Table header -->
+            <div class="screen-page">
+
+                <header class="screen-header">
+                    <img src="res/Keysight-Logo.png" alt="Keysight Logo" class="screen-logo">
+                    <h1 class="screen-title">Commits</h1>
+                </header>
+
+                <main class="screen-body">
+                    <table>
+                        <!-- Table header -->
                         <thead>
                             <tr>
                                 <th style="text-align: left; padding: 1rem; border-bottom: 2px solid rgba(255,255,255,0.25);">
@@ -268,9 +245,12 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
+                </main>
+
             </div>
+
         </div>
+
     </div>
 </body>
 </html>
