@@ -1,3 +1,52 @@
+/* ===================================== */
+/* 🧱 SCREEN PAGE SYSTEM */
+/* ===================================== */
+
+.screen-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+/* ===================================== */
+/* 🔝 HEADER (CONSISTENT ACROSS ALL PAGES) */
+/* ===================================== */
+
+.screen-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 2vw;
+    padding: 1.5vw 2vw;
+
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+}
+
+.screen-logo {
+    width: 12vw;
+    max-width: 250px;
+}
+
+.screen-title {
+    font-size: 3vw;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* ===================================== */
+/* 📄 BODY (CONTENT AREA) */
+/* ===================================== */
+
+.screen-body {
+    flex: 1;
+    padding: 2vw;
+    overflow: hidden;
+}
+
+/*--- START
+
 /* Main 2-column grid layout for plot screen */
 .main-2col-grid {
     display: grid;
@@ -263,59 +312,6 @@
     white-space: nowrap;
 }
 
-/* Adjust the header styles */
-#header {
-    text-align: center;
-    margin-bottom: 20px; /* Adjust this value if needed */
-}
-
-#header img {
-    width: clamp(300px, 20vw, 500px); /* Dynamically scale width between 100px and 300px */
-    height: auto; /* Maintain aspect ratio */
-    max-width: 100%; /* Ensure it doesn't exceed the container width */
-    margin-top: 3vh; /* Reduce space above the image */
-}
-
-#header hr {
-    border: 0;
-    height: 1px;
-    background-color: #ffffff; /* Change to your desired color */
-    margin: 0 30vw 0 30vw; /* Adjust this value if needed */
-}
-
-#text-screen #header h1 {
-    margin-top: 0; /* Remove extra space above the heading */
-    margin-bottom: 5vh; /* Add a small gap below the heading */
-    font-size: clamp(1.5rem, 4vw, 5rem); /* Responsive font size */
-    color: white;
-    text-align: center; /* Ensure the text is centered */
-    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5); /* Optional shadow for better visibility */
-}
-
-/* Offset h2 from the left */
-#text-screen h1 {
-    margin-left: 5vw;
-    margin-right: 5vw;
-    margin-top: 4vh;
-    text-align: left;
-    font-size: clamp(1rem, 4vh, 2.9rem); /* Responsive font size */
-}
-
-/* Indent ul under h2 */
-#text-screen ul {
-    margin-left: 5vw;
-    margin-right: 5vw;
-    margin-top: 1vh;
-    list-style-type: disc;
-    font-size: clamp(0.5rem, 3.3vh, 2.25rem); /* Responsive font size */
-}
-
-#text-screen ul li {
-    margin-bottom: 2vh;
-    text-align: left;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Optional shadow for better visibility */
-}
-
 /* Flashing animation */
 @keyframes flash {
     0% {
@@ -327,38 +323,6 @@
     100% {
         opacity: 1; /* Fully visible */
     }
-}
-
-#notes-screen {
-    background-color: #1c253f; /* Background color */
-    color: white; /* Text color */
-    padding: 10px; /* Inner padding */
-    margin: 3.5vh; /* Space around the edges */
-    position: fixed; /* Make it cover the entire viewport */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    box-sizing: border-box; /* Include padding in the total size */
-    border-radius: 10px; /* Optional: Add rounded corners */
-    overflow: auto; /* Enable scrolling if content overflows */
-}
-
-#notes-screen h1 {
-    text-align: center; /* Center-align text */
-    font-size: clamp(1.5rem, 4vw, 5rem); /* Responsive font size */
-    margin-bottom: 5vh; /* Space below the heading */
-    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5); /* Optional shadow for better visibility */
-}
-
-/* Styling for the notes content */
-#notes-content {
-    font-size: clamp(2rem, 3.5vw, 3rem); /* Responsive font size */
-    line-height: 1.5; /* Adjust line spacing */
-    color: white; /* Text color */
-    margin: 20px auto; /* Add spacing around the content */
-    max-width: 90%; /* Limit the width of the text */
-    word-wrap: break-word; /* Ensure long words break to the next line */
 }
 
 .hidden {
@@ -635,54 +599,6 @@ body::-webkit-scrollbar {
     font-size: 0.8vw;
 }
 
-#header {
-    margin-bottom: 1vw;
-}
-
-#header img {
-    width: 20vw;
-    margin-top: 2vh;
-}
-
-#header hr {
-    height: 0.12vw;
-    margin: 0 20vw;
-}
-
-#text-screen #header h1 {
-    margin-bottom: 3vh;
-    font-size: 3.5vw;
-}
-
-#text-screen h1 {
-    margin-top: 3vh;
-    font-size: 2.4vw;
-}
-
-#text-screen ul {
-    margin-top: 1.2vh;
-    font-size: 2vw;
-}
-
-#text-screen ul li {
-    margin-bottom: 1.6vh;
-}
-
-#notes-screen {
-    padding: 1vw;
-    margin: 0;
-    border-radius: 0.6vw;
-}
-
-#notes-screen h1 {
-    margin-bottom: 3vh;
-    font-size: 3.5vw;
-}
-
-#notes-content {
-    font-size: 2.4vw;
-    margin: 1vw auto;
-}
 
 #absorption-legend li {
     padding: 0 0.8vw;
