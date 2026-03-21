@@ -1,51 +1,261 @@
 /* ===================================== */
-/* 🧱 SCREEN PAGE SYSTEM */
+/* INDEX DISPLAY PAGE */
+/* Cleaned + reorganized */
+/* ===================================== */
+
+/* ===================================== */
+/* 1) FULLSCREEN APP LAYOUT */
+/* ===================================== */
+
+:root,
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-size: 1vw;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.layout,
+#layout-container,
+.screen {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.hidden {
+    display: none !important;
+    visibility: hidden;
+}
+
+/* ===================================== */
+/* 2) SHARED PAGE SYSTEM */
 /* ===================================== */
 
 .screen-page {
     display: flex;
     flex-direction: column;
-    height: 100%;
     width: 100%;
+    height: 100%;
 }
-
-/* ===================================== */
-/* 🔝 HEADER (CONSISTENT ACROSS ALL PAGES) */
-/* ===================================== */
 
 .screen-header {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-
     gap: 2vw;
-    padding: 1.5vw 2vw;
-
-    border-bottom: 2px solid rgba(255,255,255,0.2);
+    padding: 1.25vw 2vw;
+    border-bottom: 0.12vw solid rgba(255, 255, 255, 0.2);
+    box-sizing: border-box;
 }
 
 .screen-logo {
     width: 12vw;
     max-width: 250px;
+    height: auto;
+    display: block;
 }
 
 .screen-title {
-    font-size: 3vw;
-    font-weight: bold;
     margin: 0;
+    font-size: 3vw;
+    font-weight: 700;
+    color: white;
 }
-
-/* ===================================== */
-/* 📄 BODY (CONTENT AREA) */
-/* ===================================== */
 
 .screen-body {
     flex: 1;
     padding: 2vw;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
+/* ===================================== */
+/* 3) SHARED TYPOGRAPHY */
+/* ===================================== */
+
+.content-block {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.content-title {
+    margin: 0 0 1.5vw 0;
+    font-size: 2.1vw;
+    line-height: 1.25;
+    color: white;
+}
+
+.panel-title,
+#absorption-title,
+.area-status-section h1,
+.progress-section h1 {
+    margin: 0 0 1vw 0;
+    font-size: 2vw;
+    line-height: 1.2;
+    color: white;
+}
+
+#notes-content,
+#progress-text,
+.quarter-labels,
+.area-card,
+.commits-table,
+.commits-table th,
+.commits-table td {
+    color: white;
+}
+
+/* ===================================== */
+/* 4) TEXT / QUALITY POLICY SCREEN */
+/* ===================================== */
+
+#text-screen .screen-body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+#text-screen .content-block {
+    padding: 1vw 3vw 1vw 3vw;
+}
+
+#text-screen h2,
+#text-screen .content-title {
+    margin: 0 0 1.5vw 0;
+    font-size: 2.25vw;
+    line-height: 1.3;
+    text-align: left;
+}
+
+#text-screen ul {
+    margin: 0;
+    padding-left: 2vw;
+    font-size: 1.65vw;
+    line-height: 1.4;
+}
+
+#text-screen ul li {
+    margin-bottom: 1.1vw;
+    text-align: left;
+    text-shadow: 0.08vw 0.08vw 0.16vw rgba(0, 0, 0, 0.35);
+}
+
+
 /*--- START
+/*--- START
+
+/* ===================================== */
+/* 8) NOTES SCREEN */
+/* ===================================== */
+
+#notes-screen .screen-body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#notes-content {
+    width: 100%;
+    max-width: 90%;
+    margin: 1vw auto 0;
+    font-size: 2.2vw;
+    line-height: 1.45;
+    word-wrap: break-word;
+}
+
+/* ===================================== */
+/* 9) COMMITS SCREEN */
+/* ===================================== */
+
+#commits-screen .screen-body {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.commits-table-wrap,
+#commits-screen .screen-body > div,
+#commits-screen .screen-body > table,
+#commits-display-table {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.commits-table,
+#commits-screen table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.05);
+    border: 0.08vw solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.8vw;
+    overflow: hidden;
+    font-size: 1.1vw;
+}
+
+.commits-table thead,
+#commits-screen thead {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.commits-table th,
+.commits-table td,
+#commits-screen th,
+#commits-screen td {
+    text-align: left;
+    padding: 1vw;
+    border-bottom: 0.08vw solid rgba(255, 255, 255, 0.16);
+}
+
+.commits-table th,
+#commits-screen th {
+    font-size: 1vw;
+    font-weight: 700;
+    border-bottom: 0.12vw solid rgba(255, 255, 255, 0.25);
+}
+
+.commits-table td,
+#commits-screen td {
+    font-size: 1vw;
+}
+
+.commits-table tbody tr:last-child td,
+#commits-screen tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 1.5vw;
+    opacity: 0.85;
+}
+
+/* ===================================== */
+/* 10) ANIMATIONS */
+/* ===================================== */
+
+@keyframes flash {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/*--- END
+/*--- END
 
 /* Main 2-column grid layout for plot screen */
 .main-2col-grid {
@@ -323,11 +533,6 @@
     100% {
         opacity: 1; /* Fully visible */
     }
-}
-
-.hidden {
-    display: none !important; /* Completely hide the element */
-    visibility: hidden; /* Ensure it's not visible */
 }
 
 .plot-container {
