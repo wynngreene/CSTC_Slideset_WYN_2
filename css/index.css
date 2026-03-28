@@ -173,8 +173,8 @@ body::-webkit-scrollbar {
     width: 100%;
     max-width: 90%;
     margin: 1vw auto 0;
-    /* font-size: 2.25vw;
-    line-height: 1.45; */
+    font-size: 2.25vw;
+    line-height: 1.45;
     word-wrap: break-word;
 }
 
