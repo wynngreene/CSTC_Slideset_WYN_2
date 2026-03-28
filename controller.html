@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Production Controller</title>
     <link rel="icon" type="image/png" href="res/Keysight-Logo.png">
+
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script>
         // ====== WHAT THIS DOES ======
         // Dynamically loads CSS files with a timestamp
@@ -232,10 +235,14 @@
         </div>
 
         <div id="controller-container">
+
         <!-- Row 1, Col 1: Production Area Status Controller -->
-        <div class="column" data-grid-row="1" data-grid-column="1">
-            <h2>Production Area Status</h2>
-            <div class="status-grid">
+        <div class="column card" data-grid-row="1" data-grid-column="1">
+            <div class="card-header">
+                <h2>Production Area Status</h2>
+            </div>
+
+            <div class="status-grid card-body">
                 <!-- ...status items as before... -->
                 <div class="status-item">
                     <div class="toggle-container" data-area="thinfilm"><div class="toggle-switch"></div></div><label for="thinfilm-toggle">Thinfilm</label>
@@ -280,69 +287,90 @@
                     <div class="toggle-container" data-area="tpfc"><div class="toggle-switch"></div></div><label for="tpfc-toggle">TPFC (Model Ship)</label>
                 </div>
             </div>
+
         </div>
 
         <!-- Row 1, Col 2: Slide Control -->
-        <div class="column" data-grid-row="1" data-grid-column="2">
-            <h2>Slide Control</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 0.3vw; margin-bottom: 0.3vw;">
+        <div class="column card" data-grid-row="1" data-grid-column="2">
+            <div class="card-header">
+                <h2>Slide Control</h2>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 0.3vw; margin-bottom: 0.3vw;" class="card-body">
                 <div>
-                    <label for="text-duration">Quality Slide Duration:</label>
+                    <label for="text-duration" class="form-label">Quality Slide Duration:</label>
                     <input type="number" id="text-duration" value="5" min="1" style="width: 100%;">
                 </div>
                 <div>
-                    <label for="plot-duration">Plot Slide Duration:</label>
+                    <label for="plot-duration" class="form-label">Plot Slide Duration:</label>
                     <input type="number" id="plot-duration" value="15" min="1" style="width: 100%;">
                 </div>
                 <div>
-                    <label for="notes-duration">Announcement Slide Duration:</label>
+                    <label for="notes-duration" class="form-label">Announcement Slide Duration:</label>
                     <input type="number" id="notes-duration" value="10" min="1" style="width: 100%;">
                 </div>
                 <div>
-                    <label for="commit-duration">Commits Slide Duration:</label>
+                    <label for="commit-duration" class="form-label">Commits Slide Duration:</label>
                     <input type="number" id="commit-duration" value="10" min="1" style="width: 100%;">
                 </div>
             </div>
-            <div style="display: flex; gap: 0.3vw; justify-content: center;">
+
+            <div class="card-footer">
                 <button id="update-settings">Update Settings</button>
             </div>
         </div>
 
         <!-- Row 1, Col 3: Announcements -->
-        <div class="column" data-grid-row="1" data-grid-column="3">
-            <h2>Announcements</h2>
+        <div class="column card" data-grid-row="1" data-grid-column="3">
+
+            <div class="card-header">
+                <h2>Announcements</h2>
+            </div>
             <!-- Toolbar for rich text editing -->
-            <div id="rich-text-toolbar">
-                <button type="button" onclick="document.execCommand('bold')"><b>B</b></button>
-                <button type="button" onclick="document.execCommand('italic')"><i>I</i></button>
-                <button type="button" onclick="document.execCommand('underline')"><u>U</u></button>
-                <select id="font-size-selector" style="margin-left: 1vw;">
-                    <option value="36pt">36pt</option>
-                    <option value="48pt">48pt</option>
-                    <option value="72pt">72pt</option>
-                    <option value="128pt">128pt</option>
-                </select>
-                <input type="color" id="font-color-selector" value="#E61515" style="width: 2.6vw; height: 1.9vw; vertical-align: middle;">
-                <button type="button" onclick="document.execCommand('insertUnorderedList')" style="margin-left: 1vw;">• List</button>
-                <button type="button" onclick="document.execCommand('insertOrderedList')">1. List</button>
+            <div class="card-body">
+
+                <div id="rich-text-toolbar">
+                    <button type="button" onclick="document.execCommand('bold')" class="btn btn-primary"><b>B</b></button>
+                    <button type="button" onclick="document.execCommand('italic')" class="btn btn-primary"><i>I</i></button>
+                    <button type="button" onclick="document.execCommand('underline')" class="btn btn-primary"><u>U</u></button>
+                    <select id="font-size-selector">
+                        <option value="36pt">36pt</option>
+                        <option value="48pt">48pt</option>
+                        <option value="72pt">72pt</option>
+                        <option value="128pt">128pt</option>
+                    </select>
+                    <input type="color" id="font-color-selector" value="#E61515" class="btn btn-primary">
+                    <button type="button" onclick="document.execCommand('insertUnorderedList')"class="btn btn-primary">• List</button>
+                    <button type="button" onclick="document.execCommand('insertOrderedList')" class="btn btn-primary"  >1. List</button>
+                </div>
+
+                <!-- Content-editable div for rich text input -->
+                <div id="notes-input" contenteditable="true" class="form-control">
+                    Enter announcements here...
+                </div>
+
             </div>
-            <!-- Content-editable div for rich text input -->
-            <div id="notes-input" contenteditable="true">
-                Enter announcements here...
+
+            <div class="card-footer">
+                <button id="clear-notes" class="">Clear Announcements</button>
+                <button id="update-notes" class="">Update Announcements</button>
             </div>
-            <br>
-            <button id="clear-notes" style="margin:0 0.3vw 0 0.1vw;">Clear Announcements</button>
-            <button id="update-notes">Update Announcements</button>
+
         </div>
 
         <!-- Row 2, Col 1: One Lean Idea (OLI) -->
-        <div class="column" data-grid-row="2" data-grid-column="1">
-            <h2>One Lean Idea (OLI)</h2>
-            <div style="margin-bottom: 0.3vw;">
-                <label for="oli-annual-goal" style="font-weight: bold;">Annual Goal:</label>
-                <input type="number" id="oli-annual-goal" style="width: 100%; margin-top: 0.1vw; margin-bottom: 0.2vw;">
+        <div class="column card" data-grid-row="2" data-grid-column="1">
+            <div class="card-header">
+                <h2>One Lean Idea (OLI)</h2>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.2vw;">
+
+            <div class="card-body">
+                <div>
+                    <label for="oli-annual-goal" style="font-weight: bold;">Annual Goal:</label>
+                    <input type="number" id="oli-annual-goal" style="width: 100%;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.2vw;">
                 <div>
                     <label for="oli-q1">Q1 Accomplishment:</label>
                     <input type="number" id="oli-q1" style="width: 100%; margin-top: 0.1vw;">
@@ -360,17 +388,28 @@
                     <input type="number" id="oli-q4" style="width: 100%; margin-top: 0.1vw;">
                 </div>
             </div>
-            <div style="width: 100%; display: flex; justify-content: center; margin-top: 0.3vw;">
+            
+            </div>
+
+
+            <div class="card-footer">
                 <button id="update-oli">Update OLI</button>
             </div>
+
         </div>
+
         <!-- Row 2, Col 2: Plot Data Table -->
-        <div class="column" data-grid-row="2" data-grid-column="2" style="overflow-y: auto; height: 100%;">
-            <h2 style="margin-bottom: 0.2vw;">Absorption Data</h2>
+        <div class="column card" data-grid-row="2" data-grid-column="2" style="overflow-y: auto; height: 100%;">
+            <div class="card-header">
+                <h2>Absorption Data</h2>
+            </div>
+            
+            <div class="card-body">
             <div style="display: flex; gap: 0.2vw; margin-bottom: 0.1vw;">
                 <button id="add-plot-row">Add Row</button>
                 <button id="delete-plot-row">Delete Row</button>
             </div>
+
             <table id="plot-data-table" border="1" style="width:100%;">
                 <thead>
                     <tr>
@@ -437,78 +476,89 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="width: 100%; display: flex; justify-content: center; margin-top: 0.2vw;">
+            </div>
+
+            <div class="card-footer">
                 <button id="update-plot-data">Update Plot Data</button>
             </div>
+
         </div>
+        
         <!-- Row 2, Col 3: User-modifiable table -->
-        <div class="column" data-grid-row="2" data-grid-column="3" style="overflow-y: auto; height: 100%;">
-            <h2 style="margin-bottom: 0.2vw;">Commits</h2>
-            <div style="display: flex; gap: 0.2vw; margin-bottom: 0.1vw;">
-                <button id="add-row">Add Row</button>
-                <button id="delete-row">Delete Row</button>
+        <div class="column card" data-grid-row="2" data-grid-column="3" style="overflow-y: auto; height: 100%;">
+            <div class="card-header">
+                <h2>Commits</h2>
             </div>
-            <table id="user-table" border="1" style="width:100%;">
-                <thead>
-                    <tr>
-                        <th>Part #</th>
-                        <th>Qty.</th>
-                        <th>Date</th>
-                        <th>Location</th>
-                    </tr>
-                </thead>
-                <tbody contenteditable="true">
-                    <tr>
-                        <td>PP0004A-F6</td>
-                        <td>10</td>
-                        <td>8/19</td>
-                        <td>Test</td>
-                    </tr>
-                    <tr>
-                        <td>DP0010A-F6</td>
-                        <td>7</td>
-                        <td>8/19</td>
-                        <td>Test</td>
-                    </tr>
-                    <tr>
-                        <td>N7024A-F6</td>
-                        <td>10</td>
-                        <td>8/23</td>
-                        <td>Final Package</td>
-                    </tr>
-                    <tr>
-                        <td>N5426-60020</td>
-                        <td>40</td>
-                        <td>8/23</td>
-                        <td>Kitting</td>
-                    </tr>
-                    <tr>
-                        <td>N5381-60030</td>
-                        <td>40</td>
-                        <td>8/23</td>
-                        <td>Kitting</td>
-                    </tr>
-                    <tr>
-                        <td>MX0106-60001</td>
-                        <td>10</td>
-                        <td>8/23</td>
-                        <td>Assembly</td>
-                    </tr>
-                    <tr>
-                        <td>E2678-60020</td>
-                        <td>20</td>
-                        <td>8/23</td>
-                        <td>Final Package</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="width: 100%; display: flex; justify-content: center; margin-top: 0.2vw;">
+            <div class="card-body">
+                <div style="display: flex; gap: 0.2vw; margin-bottom: 0.1vw;">
+                    <button id="add-row">Add Row</button>
+                    <button id="delete-row">Delete Row</button>
+                </div>
+                    <table id="user-table" border="1" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Part #</th>
+                                <th>Qty.</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody contenteditable="true">
+                            <tr>
+                                <td>PP0004A-F6</td>
+                                <td>10</td>
+                                <td>8/19</td>
+                                <td>Test</td>
+                            </tr>
+                            <tr>
+                                <td>DP0010A-F6</td>
+                                <td>7</td>
+                                <td>8/19</td>
+                                <td>Test</td>
+                            </tr>
+                            <tr>
+                                <td>N7024A-F6</td>
+                                <td>10</td>
+                                <td>8/23</td>
+                                <td>Final Package</td>
+                            </tr>
+                            <tr>
+                                <td>N5426-60020</td>
+                                <td>40</td>
+                                <td>8/23</td>
+                                <td>Kitting</td>
+                            </tr>
+                            <tr>
+                                <td>N5381-60030</td>
+                                <td>40</td>
+                                <td>8/23</td>
+                                <td>Kitting</td>
+                            </tr>
+                            <tr>
+                                <td>MX0106-60001</td>
+                                <td>10</td>
+                                <td>8/23</td>
+                                <td>Assembly</td>
+                            </tr>
+                            <tr>
+                                <td>E2678-60020</td>
+                                <td>20</td>
+                                <td>8/23</td>
+                                <td>Final Package</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+
+            <div class="card-footer">
                 <button id="update-commits">Update Commits Table</button>
             </div>
         </div>
         </div> <!-- End of controller-container -->
     </div> <!-- End of controllerContent -->
     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
         // Integrated Authentication & Controller Management
         class IntegratedController {
