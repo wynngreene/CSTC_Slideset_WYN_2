@@ -26,7 +26,6 @@ body::-webkit-scrollbar {
 
 #user-table td, #user-table th {
   height: auto;
-  overflow: auto;
   padding: 0.15vw;
   word-wrap: break-word;
   word-break: break-word;
@@ -37,12 +36,8 @@ body::-webkit-scrollbar {
   border: 1px solid #ccc;
   color: white;
   table-layout: auto;
-  overflow: auto;
 }
 
-#user-table th, #user-table td {
-  color: white !important;
-}
 
 /* Apply the same styling to plot data table */
 #plot-data-table {
@@ -50,13 +45,10 @@ body::-webkit-scrollbar {
   border: 1px solid #ccc;
   color: white;
   table-layout: auto;
-  overflow: auto;
 }
 
 #plot-data-table th, #plot-data-table td {
-  color: white !important;
   height: auto;
-  overflow: auto;
   padding: 0.15vw;
   word-wrap: break-word;
   word-break: break-word;
@@ -145,6 +137,29 @@ body::-webkit-scrollbar {
   box-sizing: border-box;
 }
 
+/* ------------------------------------------------- */
+/* ----------------BOOTSTRAPS ---------------------- */
+/* ------------------------------------------------- */
+
+.card-body {
+    min-height: 0;
+}
+
+.table-scroll-area {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+#notes-input {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+
 /* Position columns using data attributes for clarity */
 .column[data-grid-row="1"][data-grid-column="1"] { grid-row: 1; grid-column: 1; }
 .column[data-grid-row="1"][data-grid-column="2"] { grid-row: 1; grid-column: 2; }
@@ -164,7 +179,7 @@ body::-webkit-scrollbar {
   width: 100%;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .column h2 {
@@ -352,7 +367,7 @@ button:hover {
     font-size: 0.9vw;
 }
 
-#notes-input {
+/* #notes-input {
     border: 1px solid #ccc;
     padding: 0.2vw;
     min-height: 4vh;
@@ -368,12 +383,12 @@ button:hover {
     margin-bottom: 0.1vw;
     word-wrap: break-word;
     flex-shrink: 1;
-}
+} */
 
 /* Additional responsive and scrolling rules */
 
 /* Ensure tables can grow to fill the cell and only tbody scrolls */
-table {
+/* table {
     width: 100%;
     max-width: 100%;
     border-collapse: collapse;
@@ -383,10 +398,10 @@ table {
 #user-table {
     display: flex;
     flex-direction: column;
-    flex: 0 1 55%;
+    /* flex: 0 1 55%;
     min-height: 0;
     height: 55%;
-    max-height: 55%;
+    max-height: 55%; 
 }
 
 #plot-data-table thead,
@@ -412,14 +427,16 @@ table {
     width: 100%;
     table-layout: fixed;
 }
+    */
 
 /* Make sure content before buttons can scroll */
+/*
 table,
 .status-grid,
 #notes-input {
     flex-shrink: 1;
     min-height: 0;
-}
+} */
 
 /* Make toolbar responsive */
 #rich-text-toolbar button,
