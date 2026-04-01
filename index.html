@@ -215,8 +215,9 @@
         </header>
 
         <main class="screen-body">
-            <div class="commits-grid">
+            <div class="commits-grid" id="commits-grid"> 
 
+                <!-- COLUMN 01 -->
                 <div class="commits-panel">
                     <table class="commits-table">
                         <thead>
@@ -227,7 +228,7 @@
                                 <th>Location</th>
                             </tr>
                         </thead>
-                        <tbody id="commits-display-body-left">
+                        <tbody id="commits-col-1">
                             <tr>
                                 <td colspan="4" class="empty-state">No commits available.</td>
                             </tr>
@@ -235,6 +236,7 @@
                     </table>
                 </div>
 
+                <!-- COLUMN 02 -->
                 <div class="commits-panel">
                     <table class="commits-table">
                         <thead>
@@ -245,9 +247,28 @@
                                 <th>Location</th>
                             </tr>
                         </thead>
-                        <tbody id="commits-display-body-right">
+                        <tbody id="commits-col-2">
                             <tr>
-                                <td colspan="4" class="empty-state">No additional commits.</td>
+                                <td colspan="4" class="empty-state">No commits available.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- COLUMN 03 -->
+                <div class="commits-panel">
+                    <table class="commits-table">
+                        <thead>
+                            <tr>
+                                <th>Part #</th>
+                                <th>Qty.</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody id="commits-col-3">
+                            <tr>
+                                <td colspan="4" class="empty-state">No commits available.</td>
                             </tr>
                         </tbody>
                     </table>

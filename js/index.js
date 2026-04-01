@@ -218,74 +218,90 @@ document.addEventListener("DOMContentLoaded", async () => {
     // }
 
     async function updateCommitsDisplay() {
-        try {
-            const data = await SlideshowDataManager.loadData();
-            const commits = data.commits || [];
+    try {
+        const data = await SlideshowDataManager.loadData();
+        const commits = data.commits || [];
 
-            const leftBody = document.getElementById('commits-display-body-left');
-            const rightBody = document.getElementById('commits-display-body-right');
+        const grid = document.getElementById('commits-grid');
 
-            if (!leftBody || !rightBody) {
-                console.error('Commits table bodies not found.');
-                return;
-            }
+        const col1 = document.getElementById('commits-col-1');
+        const col2 = document.getElementById('commits-col-2');
+        const col3 = document.getElementById('commits-col-3');
 
-            const leftCommits = commits.slice(0, 10);
-            const rightCommits = commits.slice(10, 20);
+        if (!grid || !col1 || !col2 || !col3) return;
 
-            leftBody.innerHTML = leftCommits.length
-                ? leftCommits.map(commit => `
-                    <tr>
-                        <td>${commit.partNumber || ''}</td>
-                        <td>${commit.quantity ?? ''}</td>
-                        <td>${commit.date || ''}</td>
-                        <td>${commit.location || ''}</td>
-                    </tr>
-                `).join('')
-                : `
-                    <tr>
-                        <td colspan="4" class="empty-state">No commits available.</td>
-                    </tr>
-                `;
+        // RESET
+        col1.innerHTML = '';
+        col2.innerHTML = '';
+        col3.innerHTML = '';
 
-            rightBody.innerHTML = rightCommits.length
-                ? rightCommits.map(commit => `
-                    <tr>
-                        <td>${commit.partNumber || ''}</td>
-                        <td>${commit.quantity ?? ''}</td>
-                        <td>${commit.date || ''}</td>
-                        <td>${commit.location || ''}</td>
-                    </tr>
-                `).join('')
-                : `
-                    <tr>
-                        <td colspan="4" class="empty-state">No additional commits.</td>
-                    </tr>
-                `;
+        const count = commits.length;
 
-        } catch (error) {
-            console.error('Error loading commits data:', error);
+        // =========================
+        // CASE 0: NO COMMITS
+        // =========================
+        if (count === 0) {
+            grid.className = 'commits-grid cols-1';
 
-            const leftBody = document.getElementById('commits-display-body-left');
-            const rightBody = document.getElementById('commits-display-body-right');
+            col1.innerHTML = `
+                <tr>
+                    <td colspan="4" class="empty-state">No commits.</td>
+                </tr>
+            `;
 
-            if (leftBody) {
-                leftBody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="empty-state">Error loading commits.</td>
-                    </tr>
-                `;
-            }
-
-            if (rightBody) {
-                rightBody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="empty-state">Error loading commits.</td>
-                    </tr>
-                `;
-            }
+            col2.parentElement.classList.add('hidden');
+            col3.parentElement.classList.add('hidden');
+            return;
         }
+
+        // =========================
+        // DETERMINE COLUMNS
+        // =========================
+        let columns = 1;
+
+        if (count <= 10) columns = 1;
+        else if (count <= 20) columns = 2;
+        else columns = 3;
+
+        grid.className = `commits-grid cols-${columns}`;
+
+        // SHOW/HIDE PANELS
+        col1.parentElement.classList.remove('hidden');
+        col2.parentElement.classList.toggle('hidden', columns < 2);
+        col3.parentElement.classList.toggle('hidden', columns < 3);
+
+        // =========================
+        // SPLIT DATA EVENLY
+        // =========================
+        const perColumn = Math.ceil(count / columns);
+
+        const groups = [
+            commits.slice(0, perColumn),
+            commits.slice(perColumn, perColumn * 2),
+            commits.slice(perColumn * 2)
+        ];
+
+        const columnsArr = [col1, col2, col3];
+
+        columnsArr.forEach((col, index) => {
+            if (index >= columns) return;
+
+            const group = groups[index];
+
+            col.innerHTML = group.map(c => `
+                <tr>
+                    <td>${c.partNumber || ''}</td>
+                    <td>${c.quantity ?? ''}</td>
+                    <td>${c.date || ''}</td>
+                    <td>${c.location || ''}</td>
+                </tr>
+            `).join('');
+        });
+
+    } catch (error) {
+        console.error('Error loading commits:', error);
     }
+}
 
     // =====================================================
     // 🔄 SWITCH SCREENS (CORE LOGIC)

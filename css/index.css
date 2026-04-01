@@ -248,36 +248,23 @@ body::-webkit-scrollbar {
 
 .commits-grid {
     display: grid;
+    gap: 1vw;
+}
+
+.commits-grid.cols-1 {
+    grid-template-columns: 1fr;
+}
+
+.commits-grid.cols-2 {
     grid-template-columns: 1fr 1fr;
-    gap: 1.5vw;
-    width: 100%;
-    height: 100%;
-    align-items: start;
 }
 
-.commits-panel {
-    width: 100%;
+.commits-grid.cols-3 {
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
-.commits-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.commits-table th,
-.commits-table td {
-    text-align: left;
-    padding: 1rem;
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-}
-
-.commits-table th {
-    border-bottom: 2px solid rgba(255,255,255,0.25);
-}
-
-.empty-state {
-    padding: 1.5rem;
-    text-align: center;
+.commits-panel.hidden {
+    display: none;
 }
 
 /* ===================================== */
