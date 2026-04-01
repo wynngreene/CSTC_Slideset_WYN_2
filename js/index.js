@@ -599,79 +599,146 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 📈 OLI PROGRESS BAR
     // =====================================================
 
+    // async function updateOLIProgressBar() {
+    //     try {
+    //         const config = await SlideshowDataManager.loadData();
+    //         const oli = config.oli || { annualGoal: 100, quarters: { q1: 0, q2: 0, q3: 0, q4: 0 } };
+    //         const goal = Number(oli.annualGoal) || 100;
+    //         const q1 = Number(oli.quarters?.q1) || 0;
+    //         const q2 = Number(oli.quarters?.q2) || 0;
+    //         const q3 = Number(oli.quarters?.q3) || 0;
+    //         const q4 = Number(oli.quarters?.q4) || 0;
+    //         const current = q1 + q2 + q3 + q4;
+            
+    //         // Calculate widths as percent of goal for each quarter
+    //         const q1Width = Math.max((q1 / goal) * 100, 0);
+    //         const q2Width = Math.max((q2 / goal) * 100, 0);
+    //         const q3Width = Math.max((q3 / goal) * 100, 0);
+    //         const q4Width = Math.max((q4 / goal) * 100, 0);
+            
+    //         // Set bar widths and update values
+    //         const q1Bar = document.getElementById('oli-q1-bar');
+    //         const q2Bar = document.getElementById('oli-q2-bar');
+    //         const q3Bar = document.getElementById('oli-q3-bar');
+    //         const q4Bar = document.getElementById('oli-q4-bar');
+            
+    //         q1Bar.style.width = q1Width + '%';
+    //         q2Bar.style.width = q2Width + '%';
+    //         q3Bar.style.width = q3Width + '%';
+    //         q4Bar.style.width = q4Width + '%';
+            
+    //         // Update the values displayed in each quarter
+    //         document.getElementById('q1-value').textContent = q1;
+    //         document.getElementById('q2-value').textContent = q2;
+    //         document.getElementById('q3-value').textContent = q3;
+    //         document.getElementById('q4-value').textContent = q4;
+            
+    //         // Set data attributes for CSS styling (show/hide values based on width)
+    //         q1Bar.setAttribute('data-width', q1Width > 0 ? q1Width : '0');
+    //         q2Bar.setAttribute('data-width', q2Width > 0 ? q2Width : '0');
+    //         q3Bar.setAttribute('data-width', q3Width > 0 ? q3Width : '0');
+    //         q4Bar.setAttribute('data-width', q4Width > 0 ? q4Width : '0');
+            
+    //         // Position quarter labels under the center of each segment
+    //         const q1Label = document.querySelector('.quarter-labels span:nth-child(1)');
+    //         const q2Label = document.querySelector('.quarter-labels span:nth-child(2)');
+    //         const q3Label = document.querySelector('.quarter-labels span:nth-child(3)');
+    //         const q4Label = document.querySelector('.quarter-labels span:nth-child(4)');
+            
+    //         // Calculate cumulative positions for segment centers
+    //         const q1Center = q1Width / 2;
+    //         const q2Center = q1Width + (q2Width / 2);
+    //         const q3Center = q1Width + q2Width + (q3Width / 2);
+    //         const q4Center = q1Width + q2Width + q3Width + (q4Width / 2);
+            
+    //         // Only position labels if segments have width > 0
+    //         if (q1Width > 0) q1Label.style.left = q1Center + '%';
+    //         else q1Label.style.left = '0%';
+            
+    //         if (q2Width > 0) q2Label.style.left = q2Center + '%';
+    //         else q2Label.style.left = '25%';
+            
+    //         if (q3Width > 0) q3Label.style.left = q3Center + '%';
+    //         else q3Label.style.left = '50%';
+            
+    //         if (q4Width > 0) q4Label.style.left = q4Center + '%';
+    //         else q4Label.style.left = '75%';
+            
+    //         // Update progress text - cleaner format
+    //         const progressPercentage = Math.round((current / goal) * 100);
+    //         const remaining = Math.max(goal - current, 0);
+    //         document.getElementById('progress-text').textContent = `${current} / ${goal} Ideas (${progressPercentage}%) • ${remaining} Remaining`;
+    //     } catch (err) {
+    //         document.getElementById('progress-text').textContent = 'Error loading OLI progress';
+    //     }
+    // }
+
     async function updateOLIProgressBar() {
-        try {
-            const config = await SlideshowDataManager.loadData();
-            const oli = config.oli || { annualGoal: 100, quarters: { q1: 0, q2: 0, q3: 0, q4: 0 } };
-            const goal = Number(oli.annualGoal) || 100;
-            const q1 = Number(oli.quarters?.q1) || 0;
-            const q2 = Number(oli.quarters?.q2) || 0;
-            const q3 = Number(oli.quarters?.q3) || 0;
-            const q4 = Number(oli.quarters?.q4) || 0;
-            const current = q1 + q2 + q3 + q4;
-            
-            // Calculate widths as percent of goal for each quarter
-            const q1Width = Math.max((q1 / goal) * 100, 0);
-            const q2Width = Math.max((q2 / goal) * 100, 0);
-            const q3Width = Math.max((q3 / goal) * 100, 0);
-            const q4Width = Math.max((q4 / goal) * 100, 0);
-            
-            // Set bar widths and update values
-            const q1Bar = document.getElementById('oli-q1-bar');
-            const q2Bar = document.getElementById('oli-q2-bar');
-            const q3Bar = document.getElementById('oli-q3-bar');
-            const q4Bar = document.getElementById('oli-q4-bar');
-            
-            q1Bar.style.width = q1Width + '%';
-            q2Bar.style.width = q2Width + '%';
-            q3Bar.style.width = q3Width + '%';
-            q4Bar.style.width = q4Width + '%';
-            
-            // Update the values displayed in each quarter
-            document.getElementById('q1-value').textContent = q1;
-            document.getElementById('q2-value').textContent = q2;
-            document.getElementById('q3-value').textContent = q3;
-            document.getElementById('q4-value').textContent = q4;
-            
-            // Set data attributes for CSS styling (show/hide values based on width)
-            q1Bar.setAttribute('data-width', q1Width > 0 ? q1Width : '0');
-            q2Bar.setAttribute('data-width', q2Width > 0 ? q2Width : '0');
-            q3Bar.setAttribute('data-width', q3Width > 0 ? q3Width : '0');
-            q4Bar.setAttribute('data-width', q4Width > 0 ? q4Width : '0');
-            
-            // Position quarter labels under the center of each segment
-            const q1Label = document.querySelector('.quarter-labels span:nth-child(1)');
-            const q2Label = document.querySelector('.quarter-labels span:nth-child(2)');
-            const q3Label = document.querySelector('.quarter-labels span:nth-child(3)');
-            const q4Label = document.querySelector('.quarter-labels span:nth-child(4)');
-            
-            // Calculate cumulative positions for segment centers
-            const q1Center = q1Width / 2;
-            const q2Center = q1Width + (q2Width / 2);
-            const q3Center = q1Width + q2Width + (q3Width / 2);
-            const q4Center = q1Width + q2Width + q3Width + (q4Width / 2);
-            
-            // Only position labels if segments have width > 0
-            if (q1Width > 0) q1Label.style.left = q1Center + '%';
-            else q1Label.style.left = '0%';
-            
-            if (q2Width > 0) q2Label.style.left = q2Center + '%';
-            else q2Label.style.left = '25%';
-            
-            if (q3Width > 0) q3Label.style.left = q3Center + '%';
-            else q3Label.style.left = '50%';
-            
-            if (q4Width > 0) q4Label.style.left = q4Center + '%';
-            else q4Label.style.left = '75%';
-            
-            // Update progress text - cleaner format
-            const progressPercentage = Math.round((current / goal) * 100);
-            const remaining = Math.max(goal - current, 0);
-            document.getElementById('progress-text').textContent = `${current} / ${goal} Ideas (${progressPercentage}%) • ${remaining} Remaining`;
-        } catch (err) {
-            document.getElementById('progress-text').textContent = 'Error loading OLI progress';
+    try {
+        const config = await SlideshowDataManager.loadData();
+        const oli = config.oli || { annualGoal: 100, quarters: { q1: 0, q2: 0, q3: 0, q4: 0 } };
+
+        const goal = Number(oli.annualGoal) || 100;
+        const q1 = Number(oli.quarters?.q1) || 0;
+        const q2 = Number(oli.quarters?.q2) || 0;
+        const q3 = Number(oli.quarters?.q3) || 0;
+        const q4 = Number(oli.quarters?.q4) || 0;
+
+        const current = q1 + q2 + q3 + q4;
+
+        const q1Bar = document.getElementById('oli-q1-bar');
+        const q2Bar = document.getElementById('oli-q2-bar');
+        const q3Bar = document.getElementById('oli-q3-bar');
+        const q4Bar = document.getElementById('oli-q4-bar');
+
+        const q1Value = document.getElementById('q1-value');
+        const q2Value = document.getElementById('q2-value');
+        const q3Value = document.getElementById('q3-value');
+        const q4Value = document.getElementById('q4-value');
+
+        const progressText = document.getElementById('progress-text');
+
+        const labels = document.querySelectorAll('.quarter-labels span');
+
+        if (!q1Bar || !q2Bar || !q3Bar || !q4Bar || !q1Value || !q2Value || !q3Value || !q4Value || !progressText || labels.length < 4) {
+            console.error('OLI display elements are missing.');
+            return;
+        }
+
+        const q1Width = Math.max((q1 / goal) * 100, q1 > 0 ? 2 : 0);
+        const q2Width = Math.max((q2 / goal) * 100, q2 > 0 ? 2 : 0);
+        const q3Width = Math.max((q3 / goal) * 100, q3 > 0 ? 2 : 0);
+        const q4Width = Math.max((q4 / goal) * 100, q4 > 0 ? 2 : 0);
+
+        q1Bar.style.width = `${q1Width}%`;
+        q2Bar.style.width = `${q2Width}%`;
+        q3Bar.style.width = `${q3Width}%`;
+        q4Bar.style.width = `${q4Width}%`;
+
+        q1Value.textContent = q1;
+        q2Value.textContent = q2;
+        q3Value.textContent = q3;
+        q4Value.textContent = q4;
+
+        q1Bar.setAttribute('data-width', q1Width > 0 ? q1Width : '0');
+        q2Bar.setAttribute('data-width', q2Width > 0 ? q2Width : '0');
+        q3Bar.setAttribute('data-width', q3Width > 0 ? q3Width : '0');
+        q4Bar.setAttribute('data-width', q4Width > 0 ? q4Width : '0');
+
+        const progressPercentage = Math.round((current / goal) * 100);
+        const remaining = Math.max(goal - current, 0);
+
+        progressText.textContent = `${current} / ${goal} Ideas (${progressPercentage}%) • ${remaining} Remaining`;
+
+    } catch (err) {
+        console.error('Error loading OLI progress:', err);
+
+        const progressText = document.getElementById('progress-text');
+        if (progressText) {
+            progressText.textContent = 'Error loading OLI progress';
         }
     }
+}
 
     // =====================================================
     // 🚀 INIT APP
