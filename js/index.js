@@ -162,55 +162,125 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 📋 COMMITS DISPLAY
     // =====================================================
 
+    // async function updateCommitsDisplay() {
+    //     try {
+    //         const data = await SlideshowDataManager.loadData();
+    //         const commits = data.commits || [];
+
+    //         const commitsBody = document.getElementById('commits-display-body');
+    //         if (!commitsBody) return;
+
+    //         // If no commits → show default message
+    //         if (!commits.length) {
+    //             commitsBody.innerHTML = `
+    //                 <tr>
+    //                     <td colspan="4" style="padding: 1.5rem; text-align: center;">
+    //                         No commits available.
+    //                     </td>
+    //                 </tr>
+    //             `;
+    //             return;
+    //         }
+    //         // Render commits into table rows
+    //         commitsBody.innerHTML = commits
+    //             .slice(0, 10) // only show top 10
+    //             .map(commit => `
+    //                 <tr>
+    //                     <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
+    //                         ${commit.partNumber || ''}
+    //                     </td>
+    //                     <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
+    //                         ${commit.quantity ?? ''}
+    //                     </td>
+    //                     <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
+    //                         ${commit.date || ''}
+    //                     </td>
+    //                     <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
+    //                         ${commit.location || ''}
+    //                     </td>
+    //                 </tr>
+    //             `)
+    //             .join('');
+    //     } catch (error) {
+    //         console.error('Error loading commits data:', error);
+
+    //         const commitsBody = document.getElementById('commits-display-body');
+    //         if (commitsBody) {
+    //             commitsBody.innerHTML = `
+    //                 <tr>
+    //                     <td colspan="4" style="padding: 1.5rem; text-align: center;">
+    //                         Error loading commits.
+    //                     </td>
+    //                 </tr>
+    //             `;
+    //         }
+    //     }
+    // }
+
     async function updateCommitsDisplay() {
         try {
             const data = await SlideshowDataManager.loadData();
             const commits = data.commits || [];
 
-            const commitsBody = document.getElementById('commits-display-body');
-            if (!commitsBody) return;
+            const leftBody = document.getElementById('commits-display-body-left');
+            const rightBody = document.getElementById('commits-display-body-right');
 
-            // If no commits → show default message
-            if (!commits.length) {
-                commitsBody.innerHTML = `
-                    <tr>
-                        <td colspan="4" style="padding: 1.5rem; text-align: center;">
-                            No commits available.
-                        </td>
-                    </tr>
-                `;
+            if (!leftBody || !rightBody) {
+                console.error('Commits table bodies not found.');
                 return;
             }
-            // Render commits into table rows
-            commitsBody.innerHTML = commits
-                .slice(0, 10) // only show top 10
-                .map(commit => `
+
+            const leftCommits = commits.slice(0, 10);
+            const rightCommits = commits.slice(10, 20);
+
+            leftBody.innerHTML = leftCommits.length
+                ? leftCommits.map(commit => `
                     <tr>
-                        <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
-                            ${commit.partNumber || ''}
-                        </td>
-                        <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
-                            ${commit.quantity ?? ''}
-                        </td>
-                        <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
-                            ${commit.date || ''}
-                        </td>
-                        <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
-                            ${commit.location || ''}
-                        </td>
+                        <td>${commit.partNumber || ''}</td>
+                        <td>${commit.quantity ?? ''}</td>
+                        <td>${commit.date || ''}</td>
+                        <td>${commit.location || ''}</td>
                     </tr>
-                `)
-                .join('');
+                `).join('')
+                : `
+                    <tr>
+                        <td colspan="4" class="empty-state">No commits available.</td>
+                    </tr>
+                `;
+
+            rightBody.innerHTML = rightCommits.length
+                ? rightCommits.map(commit => `
+                    <tr>
+                        <td>${commit.partNumber || ''}</td>
+                        <td>${commit.quantity ?? ''}</td>
+                        <td>${commit.date || ''}</td>
+                        <td>${commit.location || ''}</td>
+                    </tr>
+                `).join('')
+                : `
+                    <tr>
+                        <td colspan="4" class="empty-state">No additional commits.</td>
+                    </tr>
+                `;
+
         } catch (error) {
             console.error('Error loading commits data:', error);
 
-            const commitsBody = document.getElementById('commits-display-body');
-            if (commitsBody) {
-                commitsBody.innerHTML = `
+            const leftBody = document.getElementById('commits-display-body-left');
+            const rightBody = document.getElementById('commits-display-body-right');
+
+            if (leftBody) {
+                leftBody.innerHTML = `
                     <tr>
-                        <td colspan="4" style="padding: 1.5rem; text-align: center;">
-                            Error loading commits.
-                        </td>
+                        <td colspan="4" class="empty-state">Error loading commits.</td>
+                    </tr>
+                `;
+            }
+
+            if (rightBody) {
+                rightBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="empty-state">Error loading commits.</td>
                     </tr>
                 `;
             }

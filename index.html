@@ -207,50 +207,57 @@
         <!-- SCREEN 4: RECENT COMMITS -->
         <!-- ===================================================== -->
         <div id="commits-screen" class="screen hidden">
+    <div class="screen-page">
 
-            <div class="screen-page">
+        <header class="screen-header">
+            <img src="res/Keysight-Logo.png" alt="Keysight Logo" class="screen-logo">
+            <h1 class="screen-title">Commits</h1>
+        </header>
 
-                <header class="screen-header">
-                    <img src="res/Keysight-Logo.png" alt="Keysight Logo" class="screen-logo">
-                    <h1 class="screen-title">Commits</h1>
-                </header>
+        <main class="screen-body">
+            <div class="commits-grid">
 
-                <main class="screen-body">
-                    <table>
-                        <!-- Table header -->
+                <div class="commits-panel">
+                    <table class="commits-table">
                         <thead>
                             <tr>
-                                <th style="text-align: left; padding: 1rem; border-bottom: 2px solid rgba(255,255,255,0.25);">
-                                    Part #
-                                </th>
-                                <th style="text-align: left; padding: 1rem; border-bottom: 2px solid rgba(255,255,255,0.25);">
-                                    Qty.
-                                </th>
-                                <th style="text-align: left; padding: 1rem; border-bottom: 2px solid rgba(255,255,255,0.25);">
-                                    Date
-                                </th>
-                                <th style="text-align: left; padding: 1rem; border-bottom: 2px solid rgba(255,255,255,0.25);">
-                                    Location
-                                </th>
+                                <th>Part #</th>
+                                <th>Qty.</th>
+                                <th>Date</th>
+                                <th>Location</th>
                             </tr>
                         </thead>
-
-                        <!-- Table body (JS will replace this) -->
-                        <tbody id="commits-display-body">
-
-                            <!-- Default fallback row -->
+                        <tbody id="commits-display-body-left">
                             <tr>
-                                <td colspan="4" style="padding: 1.5rem; text-align: center;">
-                                    No commits available.
-                                </td>
+                                <td colspan="4" class="empty-state">No commits available.</td>
                             </tr>
                         </tbody>
                     </table>
-                </main>
+                </div>
+
+                <div class="commits-panel">
+                    <table class="commits-table">
+                        <thead>
+                            <tr>
+                                <th>Part #</th>
+                                <th>Qty.</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody id="commits-display-body-right">
+                            <tr>
+                                <td colspan="4" class="empty-state">No additional commits.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
+        </main>
 
-        </div>
+    </div>
+</div>
 
     </div>
 </body>

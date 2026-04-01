@@ -27,3 +27,4 @@ window.SlideshowConfig = {
   // Connection timeout for backend requests (in milliseconds)
   requestTimeout: 5000 // 5 seconds
 };
+
