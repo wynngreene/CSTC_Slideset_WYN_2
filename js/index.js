@@ -162,61 +162,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 📋 COMMITS DISPLAY
     // =====================================================
 
-    // async function updateCommitsDisplay() {
-    //     try {
-    //         const data = await SlideshowDataManager.loadData();
-    //         const commits = data.commits || [];
-
-    //         const commitsBody = document.getElementById('commits-display-body');
-    //         if (!commitsBody) return;
-
-    //         // If no commits → show default message
-    //         if (!commits.length) {
-    //             commitsBody.innerHTML = `
-    //                 <tr>
-    //                     <td colspan="4" style="padding: 1.5rem; text-align: center;">
-    //                         No commits available.
-    //                     </td>
-    //                 </tr>
-    //             `;
-    //             return;
-    //         }
-    //         // Render commits into table rows
-    //         commitsBody.innerHTML = commits
-    //             .slice(0, 10) // only show top 10
-    //             .map(commit => `
-    //                 <tr>
-    //                     <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
-    //                         ${commit.partNumber || ''}
-    //                     </td>
-    //                     <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
-    //                         ${commit.quantity ?? ''}
-    //                     </td>
-    //                     <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
-    //                         ${commit.date || ''}
-    //                     </td>
-    //                     <td style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);">
-    //                         ${commit.location || ''}
-    //                     </td>
-    //                 </tr>
-    //             `)
-    //             .join('');
-    //     } catch (error) {
-    //         console.error('Error loading commits data:', error);
-
-    //         const commitsBody = document.getElementById('commits-display-body');
-    //         if (commitsBody) {
-    //             commitsBody.innerHTML = `
-    //                 <tr>
-    //                     <td colspan="4" style="padding: 1.5rem; text-align: center;">
-    //                         Error loading commits.
-    //                     </td>
-    //                 </tr>
-    //             `;
-    //         }
-    //     }
-    // }
-
     async function updateCommitsDisplay() {
     try {
         const data = await SlideshowDataManager.loadData();
@@ -356,9 +301,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         // If switching to plot screen, refresh the chart data
         if (screens[currentScreenIndex].id === "plot-screen") {
-            await createAbsorptionChart();
-            await updateOLIProgressBar(); // Update OLI data when showing plot
-        }
+            requestAnimationFrame(async () => {
+                await createAbsorptionChart();
+                await updateOLIProgressBar();
+
+            setTimeout(() => {    
+                if (absorptionChart) {
+                    absorptionChart.resize();
+                }
+            }, 100);
+            });
+        }   
+        
 
         if (screens[currentScreenIndex].id === "commits-screen") {
             await updateCommitsDisplay();
@@ -492,15 +446,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // If chart already exists → update instead of recreate
         if (absorptionChart) {
-            absorptionChart.data.datasets[0].data = cleanroomData;
-            absorptionChart.data.datasets[1].data = smtData;
-            absorptionChart.data.datasets[2].data = cstcData;
-            absorptionChart.data.labels = days;
-            absorptionChart.update('none'); // Update without animation to prevent flickering
+            // absorptionChart.data.datasets[0].data = cleanroomData;
+            // absorptionChart.data.datasets[1].data = smtData;
+            // absorptionChart.data.datasets[2].data = cstcData;
+            // absorptionChart.data.labels = days;
+            // absorptionChart.update('none');
+
+            absorptionChart.destroy(); // Destroy existing chart before creating a new one
+            absorptionChart = null; // Reset chart variable to allow garbage collection
+        }
+
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) {
+            console.error("Chart canvas not found.", canvasId);
             return;
         }
 
-        const ctx = document.getElementById(canvasId).getContext("2d");
+        const ctx = canvas.getContext("2d");
         absorptionChart = new Chart(ctx, {
             type: "line",
             data: {
@@ -599,80 +561,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 📈 OLI PROGRESS BAR
     // =====================================================
 
-    // async function updateOLIProgressBar() {
-    //     try {
-    //         const config = await SlideshowDataManager.loadData();
-    //         const oli = config.oli || { annualGoal: 100, quarters: { q1: 0, q2: 0, q3: 0, q4: 0 } };
-    //         const goal = Number(oli.annualGoal) || 100;
-    //         const q1 = Number(oli.quarters?.q1) || 0;
-    //         const q2 = Number(oli.quarters?.q2) || 0;
-    //         const q3 = Number(oli.quarters?.q3) || 0;
-    //         const q4 = Number(oli.quarters?.q4) || 0;
-    //         const current = q1 + q2 + q3 + q4;
-            
-    //         // Calculate widths as percent of goal for each quarter
-    //         const q1Width = Math.max((q1 / goal) * 100, 0);
-    //         const q2Width = Math.max((q2 / goal) * 100, 0);
-    //         const q3Width = Math.max((q3 / goal) * 100, 0);
-    //         const q4Width = Math.max((q4 / goal) * 100, 0);
-            
-    //         // Set bar widths and update values
-    //         const q1Bar = document.getElementById('oli-q1-bar');
-    //         const q2Bar = document.getElementById('oli-q2-bar');
-    //         const q3Bar = document.getElementById('oli-q3-bar');
-    //         const q4Bar = document.getElementById('oli-q4-bar');
-            
-    //         q1Bar.style.width = q1Width + '%';
-    //         q2Bar.style.width = q2Width + '%';
-    //         q3Bar.style.width = q3Width + '%';
-    //         q4Bar.style.width = q4Width + '%';
-            
-    //         // Update the values displayed in each quarter
-    //         document.getElementById('q1-value').textContent = q1;
-    //         document.getElementById('q2-value').textContent = q2;
-    //         document.getElementById('q3-value').textContent = q3;
-    //         document.getElementById('q4-value').textContent = q4;
-            
-    //         // Set data attributes for CSS styling (show/hide values based on width)
-    //         q1Bar.setAttribute('data-width', q1Width > 0 ? q1Width : '0');
-    //         q2Bar.setAttribute('data-width', q2Width > 0 ? q2Width : '0');
-    //         q3Bar.setAttribute('data-width', q3Width > 0 ? q3Width : '0');
-    //         q4Bar.setAttribute('data-width', q4Width > 0 ? q4Width : '0');
-            
-    //         // Position quarter labels under the center of each segment
-    //         const q1Label = document.querySelector('.quarter-labels span:nth-child(1)');
-    //         const q2Label = document.querySelector('.quarter-labels span:nth-child(2)');
-    //         const q3Label = document.querySelector('.quarter-labels span:nth-child(3)');
-    //         const q4Label = document.querySelector('.quarter-labels span:nth-child(4)');
-            
-    //         // Calculate cumulative positions for segment centers
-    //         const q1Center = q1Width / 2;
-    //         const q2Center = q1Width + (q2Width / 2);
-    //         const q3Center = q1Width + q2Width + (q3Width / 2);
-    //         const q4Center = q1Width + q2Width + q3Width + (q4Width / 2);
-            
-    //         // Only position labels if segments have width > 0
-    //         if (q1Width > 0) q1Label.style.left = q1Center + '%';
-    //         else q1Label.style.left = '0%';
-            
-    //         if (q2Width > 0) q2Label.style.left = q2Center + '%';
-    //         else q2Label.style.left = '25%';
-            
-    //         if (q3Width > 0) q3Label.style.left = q3Center + '%';
-    //         else q3Label.style.left = '50%';
-            
-    //         if (q4Width > 0) q4Label.style.left = q4Center + '%';
-    //         else q4Label.style.left = '75%';
-            
-    //         // Update progress text - cleaner format
-    //         const progressPercentage = Math.round((current / goal) * 100);
-    //         const remaining = Math.max(goal - current, 0);
-    //         document.getElementById('progress-text').textContent = `${current} / ${goal} Ideas (${progressPercentage}%) • ${remaining} Remaining`;
-    //     } catch (err) {
-    //         document.getElementById('progress-text').textContent = 'Error loading OLI progress';
-    //     }
-    // }
-
     async function updateOLIProgressBar() {
     try {
         const config = await SlideshowDataManager.loadData();
@@ -745,7 +633,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // =====================================================
     
     try {
-        await createAbsorptionChart();
+        // await createAbsorptionChart();
         await updateOLIProgressBar();
         await updateCommitsDisplay();
         startScreenSwitching();

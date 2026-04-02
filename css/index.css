@@ -285,7 +285,7 @@ body::-webkit-scrollbar {
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: 100%;
-    width: 98vw;
+    width: 100%;
     height: 95vh;
     gap: 20px; /* Add gap between plot and right column */
     box-sizing: border-box;
@@ -296,7 +296,7 @@ body::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 100%;
+
 }
 
 .right-col {
@@ -308,14 +308,15 @@ body::-webkit-scrollbar {
 }
 
 .plot-container {
-    background-color: #1c253f; /* Match the container background */
-    border-radius: 8px;
-    padding: 20px; /* Add padding inside the plot container */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    height: 100%; /* Ensure container takes full height */
     display: flex;
     flex-direction: column;
+    height: 100%;
+
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #1c253f;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
 }
 
 .plot-row {
@@ -416,12 +417,13 @@ body::-webkit-scrollbar {
 .absorption-plot-vertical {
     display: flex;
     flex-direction: column;
+    height: 100%;
+
     align-items: center;
     width: 100%;
-    height: 100%; /* Take full height of parent */
     margin: 0 auto;
     box-sizing: border-box;
-    padding: 20px 0 30px 0; /* Add padding: top and bottom */
+    padding: 20px 0 30px 0;
 }
 
 #absorption-title {
@@ -437,12 +439,11 @@ body::-webkit-scrollbar {
 }
 
 #absorption-chart {
-    max-width: 100%;
-    width: 100%;
+    width: 100% !important;
+    height: 100% !important;
     display: block;
     margin: 0;
-    flex: 1; /* Take up all remaining space */
-    min-height: 0; /* Allow flexbox to shrink if needed */
+    flex: 1; 
 }
 
 .oli-quarter-bar {
@@ -711,8 +712,8 @@ body::-webkit-scrollbar {
 }
 
 .main-2col-grid {
-    width: 100%;
     height: 100%;
+    width: 100%;
     gap: 0.8vw;
     padding-right: 0.8vw;
     box-sizing: border-box;
@@ -771,6 +772,7 @@ body::-webkit-scrollbar {
 
 .progress-container {
     height: 3vw;
+    min-height: 20px;
     border-radius: 0.6vw;
     border-width: 0.12vw;
     margin: 0.3vw auto;
