@@ -267,6 +267,14 @@ body::-webkit-scrollbar {
     display: none;
 }
 
+.commits-table th:first-child,
+.commits-table td:first-child {
+    width: .1vw;
+    text-align: center;
+    font-weight: bold;
+    opacity: 0.8;
+}
+
 /* ===================================== */
 /* 10) ANIMATIONS */
 /* ===================================== */

@@ -233,14 +233,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const group = groups[index];
 
-            col.innerHTML = group.map(c => `
-                <tr>
-                    <td>${c.partNumber || ''}</td>
-                    <td>${c.quantity ?? ''}</td>
-                    <td>${c.date || ''}</td>
-                    <td>${c.location || ''}</td>
-                </tr>
-            `).join('');
+            col.innerHTML = group.map((c, i) => {
+        const globalIndex = index * perColumn + i + 1;
+
+        return `
+            <tr>
+                <td>${globalIndex}</td>
+                <td>${c.partNumber || ''}</td>
+                <td>${c.quantity ?? ''}</td>
+                <td>${c.date || ''}</td>
+                <td>${c.location || ''}</td>
+            </tr>
+        `;
+        }).join('');
         });
 
     } catch (error) {
