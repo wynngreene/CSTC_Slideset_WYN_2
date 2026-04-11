@@ -31,7 +31,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         durations: {
                             text: Math.round((data.settings?.textDuration || 5000) / 1000),
                             plot: Math.round((data.settings?.plotDuration || 15000) / 1000),
-                            notes: Math.round((data.settings?.notesDuration || 10000) / 1000)
+                            notes: Math.round((data.settings?.notesDuration || 10000) / 1000),
+                            commits: Math.round((data.settings?.commitDuration || 5000) / 1000)
                         },
 
                         // Production statuses
@@ -190,7 +191,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             col1.innerHTML = `
                 <tr>
-                    <td colspan="4" class="empty-state">No commits.</td>
+                    <td colspan="5" class="empty-state">No commits.</td>
                 </tr>
             `;
 
@@ -330,7 +331,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         try {
             const data = await SlideshowDataManager.loadData();
-            const durations = data.durations || { text: 5, plot: 15, notes: 10 };
+            const durations = data.durations || { text: 5, plot: 15, notes: 10 , commits: 5};
             
             switch (currentScreenId) {
                 case "text-screen":
@@ -343,7 +344,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     nextDuration = (durations.notes || 10) * 1000;
                     break;
                 case "commits-screen":
-                    nextDuration = (durations.notes || 10) * 1000;
+                    nextDuration = (durations.commits || 5) * 1000;
                     break;
                 default:
                     nextDuration = 5000;

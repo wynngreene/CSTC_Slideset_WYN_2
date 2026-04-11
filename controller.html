@@ -296,28 +296,33 @@
                 <h2>Slide Control</h2>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 0.3vw; margin-bottom: 0.3vw;" class="card-body">
-                <div>
-                    <label for="text-duration" class="form-label">Quality Slide Duration:</label>
-                    <input type="number" id="text-duration" value="5" min="1" style="width: 100%;">
-                </div>
-                <div>
-                    <label for="plot-duration" class="form-label">Plot Slide Duration:</label>
-                    <input type="number" id="plot-duration" value="15" min="1" style="width: 100%;">
-                </div>
-                <div>
-                    <label for="notes-duration" class="form-label">Announcement Slide Duration:</label>
-                    <input type="number" id="notes-duration" value="10" min="1" style="width: 100%;">
-                </div>
-                <div>
-                    <label for="commit-duration" class="form-label">Commits Slide Duration:</label>
-                    <input type="number" id="commit-duration" value="10" min="1" style="width: 100%;">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <label for="text-duration" class="form-label">Quality</label>
+                        <input type="number" id="text-duration" class="form-control" value="5" min="1">
+                    </div>
+
+                    <div class="col-6">
+                        <label for="plot-duration" class="form-label">Plot</label>
+                        <input type="number" id="plot-duration" class="form-control" value="15" min="1">
+                    </div>
+
+                    <div class="col-6">
+                        <label for="notes-duration" class="form-label">Announcements</label>
+                        <input type="number" id="notes-duration" class="form-control" value="10" min="1">
+                    </div>
+
+                    <div class="col-6">
+                        <label for="commit-duration" class="form-label">Commits</label>
+                        <input type="number" id="commit-duration" class="form-control" value="10" min="1">
+                    </div>
                 </div>
             </div>
 
-            <div class="card-footer">
-                <button id="update-settings">Update Settings</button>
-            </div>
+    <div class="card-footer">
+        <button id="update-settings">Update Settings</button>
+    </div>
         </div>
 
         <!-- Row 1, Col 3: Announcements -->
@@ -506,7 +511,7 @@
                     e.preventDefault();
                     this.handleLogin();
                 });
-                
+                queueMicrotask
                 // Check authentication periodically
                 setInterval(() => {
                     this.checkAuthentication();

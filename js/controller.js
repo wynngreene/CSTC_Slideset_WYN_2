@@ -179,10 +179,10 @@ function setupController() {
     const commits = rows.map(tr => {
       const tds = Array.from(tr.querySelectorAll('td'));
       return {
-        partNumber: tds[0]?.innerText || '',
-        quantity: Number(tds[1]?.innerText) || 0,
-        date: tds[2]?.innerText || '',
-        location: tds[3]?.innerText || ''
+        partNumber: tds[1]?.innerText || '',
+        quantity: Number(tds[2]?.innerText) || 0,
+        date: tds[3]?.innerText || '',
+        location: tds[4]?.innerText || ''
       };
     });
     try {
@@ -206,16 +206,24 @@ function setupController() {
 
   // Add row
   addRowBtn.addEventListener('click', function() {
-    const tbody = table.querySelector('tbody');
+    const tbody = document.getElementById('commits-body');
+    if (!tbody) return;
+
+    const emptyRow = tbody.querySelector('.empty-table-row');
+    if (emptyRow) emptyRow.remove();
+
     const newRow = document.createElement('tr');
-    for (let i = 0; i < 4; i++) {
-      const td = document.createElement('td');
-      td.innerHTML = '';
-      td.style.height = '20px';
-      newRow.appendChild(td);
-    }
+    newRow.innerHTML = `
+      <td class="row-number" contenteditable="false"></td>
+      <td contenteditable="true"></td>
+      <td contenteditable="true"></td>
+      <td contenteditable="true"></td>
+      <td contenteditable="true"></td>
+    `;
+
     tbody.appendChild(newRow);
-    makeCellsFocusable(); // Ensure new row cells are focusable/editable
+    makeCellsFocusable();
+    renumberCommitsTable();
   });
 
   // Delete row (delete row containing selected cell)
@@ -359,6 +367,9 @@ function setupController() {
         const textDuration = parseInt(document.getElementById("text-duration").value, 10);
         const plotDuration = parseInt(document.getElementById("plot-duration").value, 10);
         const notesDuration = parseInt(document.getElementById("notes-duration").value, 10);
+        const commitDuration = parseInt(document.getElementById("commit-duration").value, 10);
+        
+      
 
         try {
             // Only update slideshow timing here
@@ -366,7 +377,8 @@ function setupController() {
                 settings: {
                     textDuration: textDuration * 1000,
                     plotDuration: plotDuration * 1000,
-                    notesDuration: notesDuration * 1000
+                    notesDuration: notesDuration * 1000,
+                    commitDuration: commitDuration * 1000
                 }
             };
 
@@ -531,6 +543,9 @@ function setupController() {
             }
             if (settings.settings.notesDuration) {
                 document.getElementById("notes-duration").value = Math.floor(settings.settings.notesDuration / 1000);
+            }
+            if (settings.settings.commitDuration) {
+                document.getElementById("commit-duration").value = Math.floor(settings.settings.commitDuration / 1000);
             }
         }
 
