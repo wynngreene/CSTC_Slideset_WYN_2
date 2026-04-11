@@ -36,38 +36,51 @@ if (document.readyState === 'loading') {
 
 function setupController() {
     
-    const table = document.getElementById('user-table');
+  const table = document.getElementById('user-table');
   const addRowBtn = document.getElementById('add-row');
   const deleteRowBtn = document.getElementById('delete-row');
   const updateCommitsBtn = document.getElementById('update-commits');
+
   // Function to populate table from settings after authentication
+
   async function populateCommitsTable() {
-    try {
-      const data = await window.DataManager.loadData();
-      console.log(`📊 [${new Date().toISOString()}] Commits data received:`, data);
-      
-      if (data && data.commits && Array.isArray(data.commits)) {
-        const tbody = table.querySelector('tbody');
-        tbody.innerHTML = '';
-        data.commits.forEach(row => {
-          const tr = document.createElement('tr');
-          // partNumber, quantity, date, location
-          const fields = [row.partNumber, row.quantity, row.date, row.location];
-          fields.forEach(val => {
-            const td = document.createElement('td');
-            td.innerText = val || '';
-            td.style.height = '20px';
-            tr.appendChild(td);
-          });
-          tbody.appendChild(tr);
-        });
-        makeCellsFocusable(); // Ensure focus/edit after table update
-      } else {
-      }
-    } catch (error) {
-      console.error(`❌ [${new Date().toISOString()}] Error loading commits data:`, error);
+  try {
+    const data = await window.DataManager.loadData();
+    console.log(`📊 [${new Date().toISOString()}] Commits data received:`, data);
+
+    const tbody = document.getElementById('commits-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (data && data.commits && Array.isArray(data.commits) && data.commits.length) {
+      data.commits.forEach((row, index) => {
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+          <td class="row-number" contenteditable="false">${index + 1}</td>
+          <td contenteditable="true">${row.partNumber || ''}</td>
+          <td contenteditable="true">${row.quantity ?? ''}</td>
+          <td contenteditable="true">${row.date || ''}</td>
+          <td contenteditable="true">${row.location || ''}</td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    } else {
+      tbody.innerHTML = `
+        <tr class="empty-table-row">
+          <td colspan="5">No commits loaded.</td>
+        </tr>
+      `;
     }
+
+    makeCellsFocusable();
+    renumberCommitsTable();
+  } catch (error) {
+    console.error(`❌ [${new Date().toISOString()}] Error loading commits data:`, error);
   }
+}
   
   // Expose function globally so authentication handler can call it
   window.populateCommitsTable = populateCommitsTable;
@@ -207,13 +220,24 @@ function setupController() {
 
   // Delete row (delete row containing selected cell)
   deleteRowBtn.addEventListener('click', function() {
-    if (selectedCell) {
-      const tr = selectedCell.parentNode;
-      tr.parentNode.removeChild(tr);
-      selectedCell = null;
-      makeCellsFocusable(); // Reapply listeners after row removal
+  if (selectedCell) {
+    const tr = selectedCell.parentNode;
+    tr.parentNode.removeChild(tr);
+    selectedCell = null;
+
+    const tbody = document.getElementById('commits-body');
+    if (tbody && !tbody.querySelector('tr')) {
+      tbody.innerHTML = `
+        <tr class="empty-table-row">
+          <td colspan="5">No commits loaded.</td>
+        </tr>
+      `;
     }
-  });
+
+    makeCellsFocusable();
+    renumberCommitsTable();
+  }
+  }); 
 
   // Tab navigation for table cells
   function setCaretToEnd(el) {
@@ -605,15 +629,19 @@ function setupController() {
         const table = document.getElementById('user-table');
         const tbody = table.querySelector('tbody');
         const rows = Array.from(tbody.querySelectorAll('tr'));
-        const commits = rows.map(tr => {
-          const tds = Array.from(tr.querySelectorAll('td'));
-          return {
-            partNumber: tds[0]?.innerText || '',
-            quantity: Number(tds[1]?.innerText) || 0,
-            date: tds[2]?.innerText || '',
-            location: tds[3]?.innerText || ''
-          };
-        });
+
+        const commits = rows
+          .filter(tr => !tr.classList.contains('empty-table-row'))
+          .map(tr => {
+            const tds = Array.from(tr.querySelectorAll('td'));
+            return {
+              partNumber: tds[1]?.innerText || '',
+              quantity: Number(tds[2]?.innerText) || 0,
+              date: tds[3]?.innerText || '',
+              location: tds[4]?.innerText || ''
+            };
+          });
+
         try {
           const response = await window.DataManager.updateData({ oli: { annualGoal, q1, q2, q3, q4 }, commits });
           if (response) {
@@ -625,3 +653,20 @@ function setupController() {
       });
     }
 } // End of setupController function
+
+function renumberCommitsTable() {
+    const tbody = document.getElementById('commits-body');
+    if (!tbody) return;
+
+    const rows = tbody.querySelectorAll('tr');
+
+    rows.forEach((row, index) => {
+        const firstCell = row.querySelector('td');
+
+        if (!firstCell) return;
+
+        firstCell.textContent = index + 1;
+        firstCell.classList.add('row-number');
+        firstCell.setAttribute('contenteditable', 'false');
+    });
+}
