@@ -431,7 +431,7 @@ body::-webkit-scrollbar {
     width: 100%;
     margin: 0 auto;
     box-sizing: border-box;
-    padding: 20px 0 30px 0;
+    padding: 0.8vw 0 2vw 0
 }
 
 #absorption-title {
